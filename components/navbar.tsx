@@ -3,20 +3,20 @@
 import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import classNames from 'classnames';
+import { MenuIcon, XIcon } from 'lucide-react';
 
 const navigation = [
-  { name: 'Dashboard', href: '/' },
-  { name: 'Playground', href: '/playground' }
+  { name: '首页', href: '/' },
+  { name: '用户', href: '/users' },
+  { name: '订单', href: '/payments' },
+  { name: '角色', href: '/prompts' },
+  { name: '设置', href: '/settings' }
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({ user = null }: { user: any }) {
   const pathname = usePathname();
 
   return (
@@ -27,27 +27,7 @@ export default function Navbar({ user }: { user: any }) {
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    className="text-gray-100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      width="100%"
-                      height="100%"
-                      rx="16"
-                      fill="currentColor"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                      fill="black"
-                    />
-                  </svg>
+                  <Image src="/logo.svg" alt="Logo" width={32} height={32} />
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
@@ -128,9 +108,9 @@ export default function Navbar({ user }: { user: any }) {
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                    <XIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </Disclosure.Button>
               </div>
