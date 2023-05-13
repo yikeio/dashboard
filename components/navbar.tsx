@@ -12,7 +12,9 @@ const navigation = [
   { name: '首页', href: '/' },
   { name: '用户', href: '/users' },
   { name: '订单', href: '/payments' },
+  { name: '对话', href: '/conversations' },
   { name: '角色', href: '/prompts' },
+  { name: '礼品卡', href: '/gift-cards' },
   { name: '设置', href: '/settings' }
 ];
 

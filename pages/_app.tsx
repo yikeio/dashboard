@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 
 import './global.css';
 import { SWRConfig } from 'swr';
-import { request } from '../utils/request';
+import { request } from '../lib/request';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

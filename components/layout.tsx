@@ -4,7 +4,7 @@ import './globals.css';
 
 import { Suspense } from 'react';
 import { SWRConfig } from 'swr';
-import { request } from '../utils/request';
+import { request } from '../lib/request';
 import Navbar from './navbar';
 
 const metadata = {
