@@ -20,18 +20,18 @@ export function request(url: string, options: Record<string, any> = {}) {
       .then((res: any) => {
         if (res.status === 204) {
           return res.text().then((result: any) => {
-            resolve({ result, status: res.status });
+            resolve(result);
           });
         }
 
         if (res.status >= 200 && res.status <= 300) {
           res.json().then((result: any) => {
-            resolve({ result, status: res.status });
+            resolve(result);
           });
         } else {
           res.json().then((result: any) => {
             toast.error(res.status == 401 ? '请登录' : result.message);
-            reject({ result, status: res.status });
+            reject(result);
           });
         }
       })

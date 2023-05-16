@@ -11,7 +11,7 @@ import {
 } from '@tremor/react';
 import useSWR from 'swr';
 import { useState } from 'react';
-import PromptForm from './form';
+import userForm from './form';
 import {
   Dialog,
   DialogContent,
@@ -19,32 +19,32 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import PromptApi, { Prompt } from '@/api/prompts';
+import userApi, { User } from '@/api/users';
 import Loading from '@/components/loading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'react-hot-toast';
 
-export default function PromptPage() {
-  const { data, error, mutate, isLoading } = useSWR(`prompts`, PromptApi.list);
+export default function UserPage() {
+  const { data, error, mutate, isLoading } = useSWR(`users`, userApi.list);
   const [showFormModal, setShowFormModal] = useState(false);
-  const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const handleEdit = (prompt: Prompt) => {
-    setSelectedPrompt(prompt);
+  const handleEdit = (user: User) => {
+    setSelectedUser(user);
     setShowFormModal(true);
   };
 
-  const handleDelete = async (prompt: Prompt) => {
-    if (!confirm(`确定要删除 ${prompt.name} 吗？`)) {
+  const handleDelete = async (user: User) => {
+    if (!confirm(`确定要删除 ${user.name} 吗？`)) {
       return;
     }
 
-    await PromptApi.delete(prompt.id!);
+    await userApi.delete(user.id!);
     mutate();
     toast.success('已删除');
   };
 
-  const handleFormSaved = (prompt?: Prompt) => {
+  const handleFormSaved = (user?: User) => {
     mutate();
     setShowFormModal(false);
   };
@@ -56,7 +56,7 @@ export default function PromptPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>角色</Title>
+        <Title>用户</Title>
         <div className="text-gray-500">
           <small>共 {data?.total || 0} 条记录</small>
         </div>
@@ -65,41 +65,44 @@ export default function PromptPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeaderCell className="text-center">图标</TableHeaderCell>
-              <TableHeaderCell>名称</TableHeaderCell>
-              <TableHeaderCell>描述</TableHeaderCell>
+              <TableHeaderCell className="text-left">ID</TableHeaderCell>
+              <TableHeaderCell className="text-left">名称</TableHeaderCell>
+              <TableHeaderCell>邀请者</TableHeaderCell>
+              <TableHeaderCell>注册时间</TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.data.map((prompt: Prompt) => (
-              <TableRow key={prompt.id}>
-                <TableCell className="flex items-center justify-center">
-                  <Avatar onClick={() => handleEdit(prompt)}>
-                    <AvatarFallback className="text-4xl">
-                      {prompt.logo || '-'}
+            {data.data.map((user: User) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.id}</TableCell>
+                <TableCell className="flex items-center gap-4">
+                  <Avatar onClick={() => handleEdit(user)}>
+                    <AvatarFallback className="text-3xl">
+                      {user.avatar || ''}
                     </AvatarFallback>
                   </Avatar>
+                  <div>{user.name}</div>
                 </TableCell>
-                <TableCell onClick={() => handleEdit(prompt)}>
-                  {prompt.name}
+                <TableCell onClick={() => handleEdit(user)}>
+                  {user.phone_number}
+                </TableCell>
+                <TableCell onClick={() => handleEdit(user)}>
+                  <Text>{user.referrer?.name || '--'}</Text>
                 </TableCell>
                 <TableCell>
-                  <Text
-                    className="truncate max-w-md"
-                    title={prompt.description}
-                  >
-                    {prompt.description}
+                  <Text className="truncate max-w-md" title={user.created_at}>
+                    {user.created_at}
                   </Text>
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button variant="light" onClick={() => handleEdit(prompt)}>
+                  <Button variant="light" onClick={() => handleEdit(user)}>
                     编辑
                   </Button>
                   <Button
                     variant="light"
                     className="text-red-500"
-                    onClick={() => handleDelete(prompt)}
+                    onClick={() => handleDelete(user)}
                   >
                     删除
                   </Button>
@@ -117,11 +120,11 @@ export default function PromptPage() {
           <DialogHeader>
             <DialogTitle>编辑</DialogTitle>
           </DialogHeader>
-          <PromptForm
-            prompt={selectedPrompt}
+          <userForm
+            user={selectedUser}
             onSaved={handleFormSaved}
             onCancel={() => setShowFormModal(false)}
-          ></PromptForm>
+          ></userForm>
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
