@@ -18,31 +18,32 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import paymentApi, { Payment } from '@/api/payments';
+import ConversationApi, { Conversation } from '@/api/conversations';
 import Loading from '@/components/loading';
 import { toast } from 'react-hot-toast';
-import { formatDatetime, formatTimeAgo } from '@/lib/utils';
+import { formatDatetime } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
 
-export default function PaymentPage() {
+export default function ConversationPage() {
   const { data, error, mutate, isLoading } = useSWR(
-    `payments`,
-    paymentApi.list
+    `conversations`,
+    ConversationApi.list
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [selectedConversation, setSelectedConversation] =
+    useState<Conversation | null>(null);
 
-  const handleView = (payment: Payment) => {
-    setSelectedPayment(payment);
+  const handleView = (conversation: Conversation) => {
+    setSelectedConversation(conversation);
     setShowDetailModal(true);
   };
 
-  const handleDelete = async (payment: Payment) => {
-    if (!confirm(`确定要删除 ${payment.title} 吗？`)) {
+  const handleDelete = async (conversation: Conversation) => {
+    if (!confirm(`确定要删除 ${conversation.title} 吗？`)) {
       return;
     }
 
-    await paymentApi.delete(payment.id!);
+    await ConversationApi.delete(conversation.id!);
     mutate();
     toast.success('已删除');
   };
@@ -54,7 +55,7 @@ export default function PaymentPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>订单</Title>
+        <Title>对话</Title>
         <div className="text-gray-500">
           <small>共 {data?.total || 0} 条记录</small>
         </div>
@@ -65,40 +66,39 @@ export default function PaymentPage() {
             <TableRow>
               <TableHeaderCell className="text-left">ID</TableHeaderCell>
               <TableHeaderCell className="text-left">用户</TableHeaderCell>
-              <TableHeaderCell>订单号</TableHeaderCell>
-              <TableHeaderCell>金额</TableHeaderCell>
-              <TableHeaderCell>支付时间</TableHeaderCell>
-              <TableHeaderCell>状态</TableHeaderCell>
-              <TableHeaderCell>创建时间</TableHeaderCell>
+              <TableHeaderCell>消息条数</TableHeaderCell>
+              <TableHeaderCell>tokens</TableHeaderCell>
+              <TableHeaderCell>首次对话</TableHeaderCell>
+              <TableHeaderCell>最后对话</TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.data.map((payment: Payment) => (
-              <TableRow key={payment.id}>
-                <TableCell>{payment.id}</TableCell>
-                <TableCell className="flex items-center gap-4">
-                  <UserCell user={payment.creator} />
-                </TableCell>
-                <TableCell>{payment.number}</TableCell>
+            {data.data.map((conversation: Conversation) => (
+              <TableRow key={conversation.id}>
+                <TableCell>{conversation.id}</TableCell>
                 <TableCell>
-                  <Text>￥{payment.amount}</Text>
+                  <UserCell user={conversation.creator} />
                 </TableCell>
+                <TableCell>{conversation.messages_count}</TableCell>
+                <TableCell>{conversation.tokens_count}</TableCell>
                 <TableCell>
-                  <Text>{payment.paid_at}</Text>
+                  <Text>{formatDatetime(conversation.first_active_at)}</Text>
                 </TableCell>
                 <TableCell>
-                  <Text>{payment.state}</Text>
+                  <Text>{formatDatetime(conversation.last_active_at)}</Text>
                 </TableCell>
-                <TableCell>{formatDatetime(payment.created_at)}</TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button variant="light" onClick={() => handleView(payment)}>
+                  <Button
+                    variant="light"
+                    onClick={() => handleView(conversation)}
+                  >
                     查看
                   </Button>
                   <Button
                     variant="light"
                     className="text-red-500"
-                    onClick={() => handleDelete(payment)}
+                    onClick={() => handleDelete(conversation)}
                   >
                     删除
                   </Button>
@@ -116,7 +116,7 @@ export default function PaymentPage() {
           <DialogHeader>
             <DialogTitle>编辑</DialogTitle>
           </DialogHeader>
-          {JSON.stringify(selectedPayment)}
+          {JSON.stringify(selectedConversation)}
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>

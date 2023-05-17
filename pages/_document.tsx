@@ -5,9 +5,9 @@ export default function Document() {
   return (
     <Html lang="zh-CN">
       <Head />
-      <body className="h-full bg-gray-50">
+      <body className="min-h-screen bg-gray-50 flex">
         <Navbar user={undefined}></Navbar>
-        <main className="p-4 md:p-10 mx-auto max-w-7xl">
+        <main className="p-4 h-screen overflow-y-auto border-l md:p-10 flex-1">
           <Main />
         </main>
         <NextScript />

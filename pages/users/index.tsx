@@ -11,7 +11,6 @@ import {
 } from '@tremor/react';
 import useSWR from 'swr';
 import { useState } from 'react';
-import userForm from './form';
 import {
   Dialog,
   DialogContent,
@@ -21,8 +20,8 @@ import {
 } from '@/components/ui/dialog';
 import userApi, { User } from '@/api/users';
 import Loading from '@/components/loading';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'react-hot-toast';
+import UserCell from '@/components/user-cell';
 
 export default function UserPage() {
   const { data, error, mutate, isLoading } = useSWR(`users`, userApi.list);
@@ -77,12 +76,7 @@ export default function UserPage() {
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
                 <TableCell className="flex items-center gap-4">
-                  <Avatar onClick={() => handleEdit(user)}>
-                    <AvatarFallback className="text-3xl">
-                      {user.avatar || ''}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>{user.name}</div>
+                  <UserCell user={user} />
                 </TableCell>
                 <TableCell onClick={() => handleEdit(user)}>
                   {user.phone_number}
@@ -118,13 +112,9 @@ export default function UserPage() {
       >
         <DialogContent className="sm:max-w-4xl">
           <DialogHeader>
-            <DialogTitle>编辑</DialogTitle>
+            <DialogTitle>用户详情</DialogTitle>
           </DialogHeader>
-          <userForm
-            user={selectedUser}
-            onSaved={handleFormSaved}
-            onCancel={() => setShowFormModal(false)}
-          ></userForm>
+          {JSON.stringify(selectedUser)}
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
