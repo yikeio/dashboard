@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -21,13 +20,17 @@ import {
 import paymentApi, { Payment } from '@/api/payments';
 import Loading from '@/components/loading';
 import { toast } from 'react-hot-toast';
-import { formatDatetime, formatTimeAgo } from '@/lib/utils';
+import { formatDatetime, formatTimeAgo, pagginationHandler } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
+import { useRouter } from 'next/router';
+import ReactPaginate from 'react-paginate';
+import PaymentState from './state';
+import { Button } from '@/components/ui/button';
 
 export default function PaymentPage() {
-  const { data, error, mutate, isLoading } = useSWR(
-    `payments`,
-    paymentApi.list
+  const router = useRouter();
+  const { data, error, mutate, isLoading } = useSWR(`payments`, () =>
+    paymentApi.list(parseInt((router.query.page as string) || '1'))
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
@@ -59,17 +62,23 @@ export default function PaymentPage() {
           <small>共 {data?.total || 0} 条记录</small>
         </div>
       </div>
-      <div className="rounded-lg border bg-white p-6 mt-6">
+      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeaderCell className="text-left">ID</TableHeaderCell>
-              <TableHeaderCell className="text-left">用户</TableHeaderCell>
-              <TableHeaderCell>订单号</TableHeaderCell>
-              <TableHeaderCell>金额</TableHeaderCell>
-              <TableHeaderCell>支付时间</TableHeaderCell>
-              <TableHeaderCell>状态</TableHeaderCell>
-              <TableHeaderCell>创建时间</TableHeaderCell>
+              <TableHeaderCell className="w-28">ID</TableHeaderCell>
+              <TableHeaderCell>用户</TableHeaderCell>
+              <TableHeaderCell className="text-center w-28">
+                订单号
+              </TableHeaderCell>
+              <TableHeaderCell className="text-right">金额</TableHeaderCell>
+              <TableHeaderCell className="text-center">
+                支付时间
+              </TableHeaderCell>
+              <TableHeaderCell className="text-center">状态</TableHeaderCell>
+              <TableHeaderCell className="text-center">
+                创建时间
+              </TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -80,24 +89,32 @@ export default function PaymentPage() {
                 <TableCell className="flex items-center gap-4">
                   <UserCell user={payment.creator} />
                 </TableCell>
-                <TableCell>{payment.number}</TableCell>
-                <TableCell>
+                <TableCell className="text-center">{payment.number}</TableCell>
+                <TableCell className="text-right">
                   <Text>￥{payment.amount}</Text>
                 </TableCell>
-                <TableCell>
-                  <Text>{payment.paid_at}</Text>
+                <TableCell className="text-center">
+                  <Text>{payment.paid_at || '--'}</Text>
                 </TableCell>
-                <TableCell>
-                  <Text>{payment.state}</Text>
+                <TableCell className="text-center">
+                  <PaymentState payment={payment} />
                 </TableCell>
-                <TableCell>{formatDatetime(payment.created_at)}</TableCell>
+                <TableCell className="text-center">
+                  {formatDatetime(payment.created_at)}
+                </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button variant="light" onClick={() => handleView(payment)}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-5"
+                    onClick={() => handleView(payment)}
+                  >
                     查看
                   </Button>
                   <Button
-                    variant="light"
-                    className="text-red-500"
+                    variant="link"
+                    size="sm"
+                    className="h-5 text-red-500"
                     onClick={() => handleDelete(payment)}
                   >
                     删除
@@ -107,6 +124,13 @@ export default function PaymentPage() {
             ))}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-end">
+          <ReactPaginate
+            initialPage={data.current_page - 1}
+            pageCount={data.last_page}
+            onPageChange={pagginationHandler(router)}
+          />
+        </div>
       </div>
       <Dialog
         open={showDetailModal}

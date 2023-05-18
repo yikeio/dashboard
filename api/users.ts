@@ -22,8 +22,8 @@ export interface User {
 }
 
 export default class UserApi {
-  static list() {
-    return request(`users`);
+  static list(page = 1) {
+    return request(`users?page=${page}`);
   }
 
   static update(id: number, user: User): Promise<User> {

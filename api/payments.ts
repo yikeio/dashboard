@@ -8,7 +8,7 @@ export interface Payment {
   title: string;
   amount: string;
   number: string;
-  state: string;
+  state: 'pending' | 'paid' | 'expired';
   gateway: string;
   gateway_number: string;
   raw?: string;
@@ -21,8 +21,8 @@ export interface Payment {
 }
 
 export default class PaymentApi {
-  static list() {
-    return request(`payments`);
+  static list(page = 1) {
+    return request(`payments?page=${page}`);
   }
 
   static delete(id: number) {

@@ -72,7 +72,7 @@ dependencies:
     version: 0.216.0(react@18.2.0)
   next:
     specifier: 13.4.2-canary.5
-    version: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)
+    version: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
   next-auth:
     specifier: ^4.22.0
     version: 4.22.1(next@13.4.2-canary.5)(react-dom@18.2.0)(react@18.2.0)
@@ -97,6 +97,12 @@ dependencies:
   react-hot-toast:
     specifier: ^2.4.1
     version: 2.4.1(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0)
+  react-paginate:
+    specifier: ^8.2.0
+    version: 8.2.0(react@18.2.0)
+  sass:
+    specifier: ^1.62.1
+    version: 1.62.1
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
@@ -1958,6 +1964,10 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /immutable@4.3.0:
+    resolution: {integrity: sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==}
+    dev: false
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -2362,7 +2372,7 @@ packages:
       '@panva/hkdf': 1.0.4
       cookie: 0.5.0
       jose: 4.13.0
-      next: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
       oauth: 0.9.15
       openid-client: 5.4.0
       preact: 10.13.0
@@ -2379,12 +2389,12 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /next@13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0):
+  /next@13.4.2-canary.5(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1):
     resolution: {integrity: sha512-GlT5MweOGIuI1oMekPwuhlaKe4A04xyZvjSHAmimusJAK0bdQ2P0lnbHxjrCr89vKUOXYIW5N89EsD7puvMkXQ==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -2412,6 +2422,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+      sass: 1.62.1
       styled-jsx: 5.1.1(react@18.2.0)
       zod: 3.21.4
     optionalDependencies:
@@ -2797,6 +2808,15 @@ packages:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
+  /react-paginate@8.2.0(react@18.2.0):
+    resolution: {integrity: sha512-sJCz1PW+9PNIjUSn919nlcRVuleN2YPoFBOvL+6TPgrH/3lwphqiSOgdrLafLdyLDxsgK+oSgviqacF4hxsDIw==}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-remove-scroll-bar@2.3.4(@types/react@18.0.35)(react@18.2.0):
     resolution: {integrity: sha512-63C4YQBUt0m6ALadE9XV56hV8BgJWDmmTPY758iIJjfQKt2nYwoUrPk0LXRXcB/yIj82T1/Ixfdpdk68LwIB0A==}
     engines: {node: '>=10'}
@@ -3017,6 +3037,16 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.0
       is-regex: 1.1.4
+    dev: false
+
+  /sass@1.62.1:
+    resolution: {integrity: sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.0
+      source-map-js: 1.0.2
     dev: false
 
   /scheduler@0.23.0:

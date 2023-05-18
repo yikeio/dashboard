@@ -15,8 +15,8 @@ export interface Conversation {
 }
 
 export default class ConversationApi {
-  static list() {
-    return request(`conversations`);
+  static list(page = 1) {
+    return request(`conversations?page=${page}`);
   }
 
   static delete(id: number) {

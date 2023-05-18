@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -21,13 +20,16 @@ import {
 import ConversationApi, { Conversation } from '@/api/conversations';
 import Loading from '@/components/loading';
 import { toast } from 'react-hot-toast';
-import { formatDatetime } from '@/lib/utils';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
+import { useRouter } from 'next/router';
+import ReactPaginate from 'react-paginate';
+import { Button } from '@/components/ui/button';
 
 export default function ConversationPage() {
-  const { data, error, mutate, isLoading } = useSWR(
-    `conversations`,
-    ConversationApi.list
+  const router = useRouter();
+  const { data, error, mutate, isLoading } = useSWR(`conversations`, () =>
+    ConversationApi.list(parseInt((router.query.page as string) || '1'))
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedConversation, setSelectedConversation] =
@@ -60,12 +62,12 @@ export default function ConversationPage() {
           <small>共 {data?.total || 0} 条记录</small>
         </div>
       </div>
-      <div className="rounded-lg border bg-white p-6 mt-6">
+      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeaderCell className="text-left">ID</TableHeaderCell>
-              <TableHeaderCell className="text-left">用户</TableHeaderCell>
+              <TableHeaderCell className="w-28">ID</TableHeaderCell>
+              <TableHeaderCell>用户</TableHeaderCell>
               <TableHeaderCell>消息条数</TableHeaderCell>
               <TableHeaderCell>tokens</TableHeaderCell>
               <TableHeaderCell>首次对话</TableHeaderCell>
@@ -90,14 +92,17 @@ export default function ConversationPage() {
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
                   <Button
-                    variant="light"
+                    variant="link"
+                    size="sm"
+                    className="h-5"
                     onClick={() => handleView(conversation)}
                   >
                     查看
                   </Button>
                   <Button
-                    variant="light"
-                    className="text-red-500"
+                    variant="link"
+                    size="sm"
+                    className="h-5 text-red-500"
                     onClick={() => handleDelete(conversation)}
                   >
                     删除
@@ -107,6 +112,13 @@ export default function ConversationPage() {
             ))}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-end">
+          <ReactPaginate
+            initialPage={data.current_page - 1}
+            pageCount={data.last_page}
+            onPageChange={pagginationHandler(router)}
+          />
+        </div>
       </div>
       <Dialog
         open={showDetailModal}

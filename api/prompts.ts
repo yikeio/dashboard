@@ -11,8 +11,8 @@ export interface Prompt {
 }
 
 export default class PromptApi {
-  static list() {
-    return request(`prompts`);
+  static list(page = 1) {
+    return request(`prompts?page=${page}`);
   }
 
   static create(prompt: Prompt): Promise<Prompt> {

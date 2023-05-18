@@ -11,11 +11,12 @@ export interface GiftCard {
   expired_at: string;
   tokens_count: number;
   days: number;
+  state: 'used' | 'expired' | 'pending';
 }
 
 export default class GiftCardApi {
-  static list() {
-    return request(`gift-cards`);
+  static list(page = 1) {
+    return request(`gift-cards?page=${page}`);
   }
 
   static create(giftCard: GiftCard): Promise<GiftCard> {

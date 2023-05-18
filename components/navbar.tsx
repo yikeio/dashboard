@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -13,7 +12,7 @@ import {
   TerminalSquareIcon,
   UserIcon
 } from 'lucide-react';
-import { Component } from 'react';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   { name: '首页', icon: <LayoutGridIcon size={16} />, href: '/' },
@@ -31,6 +30,7 @@ const navigation = [
 
 export default function Navbar({ user = null }: { user: any }) {
   const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <nav className="bg-white h-screen shadow-sm w-48 xl:w-56 p-4 relative">
@@ -46,8 +46,8 @@ export default function Navbar({ user = null }: { user: any }) {
                 href={item.href}
                 className={classNames(
                   pathname === item.href
-                    ? 'border-slate-500 text-gray-900 border'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                    ? ' bg-gray-100 text-gray-800'
+                    : ' text-gray-500 hover:bg-gray-100 hover:text-gray-800 ',
                   'relative flex gap-2 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
                 )}
                 aria-current={pathname === item.href ? 'page' : undefined}

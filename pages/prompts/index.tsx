@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -23,14 +22,27 @@ import PromptApi, { Prompt } from '@/api/prompts';
 import Loading from '@/components/loading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import { pagginationHandler } from '@/lib/utils';
+import { useRouter } from 'next/router';
+import { PlusIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function PromptPage() {
-  const { data, error, mutate, isLoading } = useSWR(`prompts`, PromptApi.list);
+  const router = useRouter();
+  const { data, error, mutate, isLoading } = useSWR(`prompts`, () =>
+    PromptApi.list(parseInt((router.query.page as string) || '1'))
+  );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
 
   const handleEdit = (prompt: Prompt) => {
     setSelectedPrompt(prompt);
+    setShowFormModal(true);
+  };
+
+  const handleNew = () => {
+    setSelectedPrompt(null);
     setShowFormModal(true);
   };
 
@@ -56,15 +68,25 @@ export default function PromptPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>角色</Title>
+        <div className="flex items-center gap-4">
+          <Title>角色</Title>
+          <Button
+            size="sm"
+            className="flex items-center justify-center gap-2"
+            onClick={handleNew}
+          >
+            <PlusIcon size={16} /> <span>新建</span>
+          </Button>
+        </div>
         <div className="text-gray-500">
           <small>共 {data?.total || 0} 条记录</small>
         </div>
       </div>
-      <div className="rounded-lg border bg-white p-6 mt-6">
+      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
+              <TableHeaderCell className="w-28">ID</TableHeaderCell>
               <TableHeaderCell className="text-center">图标</TableHeaderCell>
               <TableHeaderCell>名称</TableHeaderCell>
               <TableHeaderCell>描述</TableHeaderCell>
@@ -74,10 +96,14 @@ export default function PromptPage() {
           <TableBody>
             {data.data.map((prompt: Prompt) => (
               <TableRow key={prompt.id}>
+                <TableCell>{prompt.id}</TableCell>
                 <TableCell className="flex items-center justify-center">
-                  <Avatar onClick={() => handleEdit(prompt)}>
-                    <AvatarFallback className="text-4xl">
-                      {prompt.logo || '-'}
+                  <Avatar
+                    onClick={() => handleEdit(prompt)}
+                    className="h-5 w-5"
+                  >
+                    <AvatarFallback className="text-xl">
+                      {prompt.logo || ''}
                     </AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -93,12 +119,18 @@ export default function PromptPage() {
                   </Text>
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button variant="light" onClick={() => handleEdit(prompt)}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-5"
+                    onClick={() => handleEdit(prompt)}
+                  >
                     编辑
                   </Button>
                   <Button
-                    variant="light"
-                    className="text-red-500"
+                    variant="link"
+                    size="sm"
+                    className="h-5 text-red-500"
                     onClick={() => handleDelete(prompt)}
                   >
                     删除
@@ -108,6 +140,13 @@ export default function PromptPage() {
             ))}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-end">
+          <ReactPaginate
+            initialPage={data.current_page - 1}
+            pageCount={data.last_page}
+            onPageChange={pagginationHandler(router)}
+          />
+        </div>
       </div>
       <Dialog
         open={showFormModal}

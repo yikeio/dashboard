@@ -178,6 +178,7 @@ const valueFormatter = (number: number) =>
 export default function IndexPage() {
   return (
     <div className="flex flex-col gap-6">
+      <h1 className="text-3xl font-bold">Hello! </h1>
       <div className="gap-6 grid grid-cols-3">
         {categories.map((item) => (
           <Card key={item.title}>

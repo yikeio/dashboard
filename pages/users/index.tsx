@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -22,9 +21,16 @@ import userApi, { User } from '@/api/users';
 import Loading from '@/components/loading';
 import { toast } from 'react-hot-toast';
 import UserCell from '@/components/user-cell';
+import ReactPaginate from 'react-paginate';
+import { useRouter } from 'next/router';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 export default function UserPage() {
-  const { data, error, mutate, isLoading } = useSWR(`users`, userApi.list);
+  const router = useRouter();
+  const { data, error, mutate, isLoading } = useSWR(`users`, () =>
+    userApi.list(parseInt((router.query.page as string) || '1'))
+  );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -52,6 +58,8 @@ export default function UserPage() {
     return <Loading />;
   }
 
+  console.log(data);
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -60,14 +68,17 @@ export default function UserPage() {
           <small>共 {data?.total || 0} 条记录</small>
         </div>
       </div>
-      <div className="rounded-lg border bg-white p-6 mt-6">
+      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeaderCell className="text-left">ID</TableHeaderCell>
-              <TableHeaderCell className="text-left">名称</TableHeaderCell>
+              <TableHeaderCell className="w-28">ID</TableHeaderCell>
+              <TableHeaderCell className="w-32">名称</TableHeaderCell>
+              <TableHeaderCell>手机号</TableHeaderCell>
               <TableHeaderCell>邀请者</TableHeaderCell>
-              <TableHeaderCell>注册时间</TableHeaderCell>
+              <TableHeaderCell className="text-center">
+                注册时间
+              </TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -75,27 +86,27 @@ export default function UserPage() {
             {data.data.map((user: User) => (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
-                <TableCell className="flex items-center gap-4">
+                <TableCell>
                   <UserCell user={user} />
                 </TableCell>
-                <TableCell onClick={() => handleEdit(user)}>
-                  {user.phone_number}
-                </TableCell>
-                <TableCell onClick={() => handleEdit(user)}>
-                  <Text>{user.referrer?.name || '--'}</Text>
-                </TableCell>
-                <TableCell>
-                  <Text className="truncate max-w-md" title={user.created_at}>
-                    {user.created_at}
-                  </Text>
+                <TableCell>{user.phone_number}</TableCell>
+                <TableCell>{user.referrer?.name || '--'}</TableCell>
+                <TableCell className="text-center">
+                  {formatDatetime(user.created_at)}
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button variant="light" onClick={() => handleEdit(user)}>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-5"
+                    onClick={() => handleEdit(user)}
+                  >
                     编辑
                   </Button>
                   <Button
-                    variant="light"
-                    className="text-red-500"
+                    variant="link"
+                    size="sm"
+                    className="h-5 text-red-500"
                     onClick={() => handleDelete(user)}
                   >
                     删除
@@ -105,6 +116,13 @@ export default function UserPage() {
             ))}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-end">
+          <ReactPaginate
+            initialPage={data.current_page - 1}
+            pageCount={data.last_page}
+            onPageChange={pagginationHandler(router)}
+          />
+        </div>
       </div>
       <Dialog
         open={showFormModal}
