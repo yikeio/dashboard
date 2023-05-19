@@ -54,11 +54,9 @@ export default function UserPage() {
     setShowFormModal(false);
   };
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <Loading />;
   }
-
-  console.log(data);
 
   return (
     <>

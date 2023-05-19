@@ -1,14 +1,12 @@
 import toast from 'react-hot-toast';
 import { trimEnd } from 'lodash';
+import Cookies from 'js-cookie';
+import { getAuthRedirectUrl } from '@/api/auth';
 
-const API_BASE_URI = trimEnd(process.env.NEXT_PUBLIC_API_BASE_URI, '/');
-
-console.log(API_BASE_URI);
+const API_BASE_URI = trimEnd(process.env.NEXT_PUBLIC_API_ADMIN_BASE_URI, '/');
 
 export function request(url: string, options: Record<string, any> = {}) {
-  const token = localStorage.getItem('auth.token');
-
-  console.log(API_BASE_URI);
+  const token = Cookies.get('auth.token');
 
   options.headers = {
     'Content-Type': 'application/json',
@@ -28,9 +26,25 @@ export function request(url: string, options: Record<string, any> = {}) {
           res.json().then((result: any) => {
             resolve(result);
           });
-        } else {
+        }
+
+        if (res.status === 401) {
           res.json().then((result: any) => {
-            toast.error(res.status == 401 ? '请登录' : result.message);
+            Cookies.remove('auth.token');
+
+            toast.error('请登录');
+
+            setTimeout(() => {
+              window.location.href = getAuthRedirectUrl();
+            }, 1000);
+
+            reject(result);
+          });
+        }
+
+        if (res.status > 401) {
+          res.json().then((result: any) => {
+            toast.error(result.message);
             reject(result);
           });
         }

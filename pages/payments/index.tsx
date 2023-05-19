@@ -50,7 +50,7 @@ export default function PaymentPage() {
     toast.success('已删除');
   };
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <Loading />;
   }
 

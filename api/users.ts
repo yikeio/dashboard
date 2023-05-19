@@ -26,6 +26,10 @@ export default class UserApi {
     return request(`users?page=${page}`);
   }
 
+  static get() {
+    return request(`user`);
+  }
+
   static update(id: number, user: User): Promise<User> {
     return request(`users/${id}`, {
       method: 'PATCH',

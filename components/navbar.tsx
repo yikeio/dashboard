@@ -13,6 +13,8 @@ import {
   UserIcon
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { Button } from './ui/button';
+import useAuth from '@/hooks/useAuth';
 
 const navigation = [
   { name: '首页', icon: <LayoutGridIcon size={16} />, href: '/' },
@@ -28,9 +30,13 @@ const navigation = [
   { name: '设置', icon: <Settings2Icon size={16} />, href: '/settings' }
 ];
 
-export default function Navbar({ user = null }: { user: any }) {
+export default function Navbar() {
   const pathname = usePathname();
-  console.log(pathname);
+  const auth = useAuth();
+  const handleLogout = () => {
+    auth.logout();
+    window.location.href = '/auth/login';
+  };
 
   return (
     <nav className="bg-white h-screen shadow-sm w-48 xl:w-56 p-4 relative">
@@ -59,15 +65,14 @@ export default function Navbar({ user = null }: { user: any }) {
           </div>
         </div>
         <div className="flex items-center gap-4 absolute bottom-0 right-0 left-0 pb-4 border-t p-4">
-          <Image
-            className="h-8 w-8 rounded-full"
-            src={user?.image || 'https://avatar.vercel.sh/leerob'}
-            height={32}
-            width={32}
-            alt={`${user?.name || 'placeholder'} avatar`}
-          />
-
-          <span>{user?.name || '未登录'}</span>
+          <Button
+            variant={'outline'}
+            size={'sm'}
+            className="w-full"
+            onClick={handleLogout}
+          >
+            注销
+          </Button>
         </div>
       </div>
     </nav>

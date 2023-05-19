@@ -6,6 +6,12 @@ const nextConfig = {
   experimental: {
     appDir: true,
     serverComponentsExternalPackages: ['@tremor/react']
+  },
+  webpack: (config) => {
+    config.experiments = {
+      topLevelAwait: true
+    };
+    return config;
   }
 };
 

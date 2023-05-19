@@ -61,7 +61,7 @@ export default function PromptPage() {
     setShowFormModal(false);
   };
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <Loading />;
   }
 

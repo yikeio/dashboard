@@ -1,19 +1,20 @@
-import { request } from '@/lib/request';
-
 /**
  * 获取跳转地址
  * @returns
  */
-export function redirectToAuthProvider(driver: string) {
-  return `${process.env.NEXT_PUBLIC_API_BASE_URI}/api/auth/redirect?driver=${driver}`;
+export function getAuthRedirectUrl(driver: string = 'github') {
+  return `${process.env.NEXT_PUBLIC_API_BASE_URI}/auth/redirect?driver=${driver}`;
 }
 
-/**
- * 创建authToken
- */
-export async function createTokens(data: any) {
-  return request(`auth/tokens:via-code`, {
+export async function getToken(
+  code: string,
+  state: string
+): Promise<Record<string, any>> {
+  return fetch(`${process.env.NEXT_PUBLIC_API_BASE_URI}/auth/tokens:via-code`, {
     method: 'POST',
-    body: JSON.stringify(data)
-  });
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ code, state })
+  }).then((res) => res.json());
 }

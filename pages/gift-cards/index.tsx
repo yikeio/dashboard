@@ -57,7 +57,7 @@ export default function GiftCardPage() {
     setShowFormModal(false);
   };
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <Loading />;
   }
 
