@@ -85,10 +85,18 @@ export default function ConversationPage() {
                 <TableCell>{conversation.messages_count}</TableCell>
                 <TableCell>{conversation.tokens_count}</TableCell>
                 <TableCell>
-                  <Text>{formatDatetime(conversation.first_active_at)}</Text>
+                  <Text>
+                    {conversation.first_active_at
+                      ? formatDatetime(conversation.first_active_at)
+                      : '-'}
+                  </Text>
                 </TableCell>
                 <TableCell>
-                  <Text>{formatDatetime(conversation.last_active_at)}</Text>
+                  <Text>
+                    {conversation.last_active_at
+                      ? formatDatetime(conversation.last_active_at)
+                      : '-'}
+                  </Text>
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
                   <Button

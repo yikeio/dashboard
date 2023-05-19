@@ -24,7 +24,7 @@ import { formatDatetime, formatTimeAgo, pagginationHandler } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
 import { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
-import PaymentState from './state';
+import PaymentState from '../../components/payment-state';
 import { Button } from '@/components/ui/button';
 
 export default function PaymentPage() {

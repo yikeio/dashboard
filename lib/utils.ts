@@ -14,12 +14,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatTimeAgo(dateStr) {
+export function formatTimeAgo(dateStr: string) {
   const date = dayjs(dateStr);
   return date.fromNow();
 }
 
-export function formatDatetime(dateStr, format = 'YYYY-MM-DD HH:mm:ss') {
+export function formatDatetime(
+  dateStr: string,
+  format = 'YYYY-MM-DD HH:mm:ss'
+) {
   const date = dayjs(dateStr);
   return date.format(format);
 }

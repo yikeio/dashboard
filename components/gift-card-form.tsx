@@ -19,7 +19,8 @@ export default function GiftCardForm(props: GiftCardProps) {
       code: '',
       tokens_count: 0,
       days: 7,
-      expired_at: formatDatetime(dayjs().add(7, 'day'))
+      state: 'pending',
+      expired_at: formatDatetime(dayjs().add(7, 'day').toString())
     }
   );
 

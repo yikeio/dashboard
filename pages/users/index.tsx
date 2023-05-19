@@ -90,7 +90,7 @@ export default function UserPage() {
                 <TableCell>{user.phone_number}</TableCell>
                 <TableCell>{user.referrer?.name || '--'}</TableCell>
                 <TableCell className="text-center">
-                  {formatDatetime(user.created_at)}
+                  {user.created_at ? formatDatetime(user.created_at) : '-'}
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
                   <Button

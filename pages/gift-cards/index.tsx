@@ -9,7 +9,7 @@ import {
 } from '@tremor/react';
 import useSWR from 'swr';
 import { useState } from 'react';
-import GiftCardForm from './form';
+import GiftCardForm from '../../components/gift-card-form';
 import {
   Dialog,
   DialogContent,
@@ -24,7 +24,7 @@ import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
 import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
-import GiftCardState from './state';
+import GiftCardState from '../../components/gift-card-state';
 import { Button } from '@/components/ui/button';
 
 export default function GiftCardPage() {
