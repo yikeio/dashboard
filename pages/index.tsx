@@ -1,3 +1,6 @@
+import StatsApi from '@/api/stats';
+import Loading from '@/components/loading';
+import UserCell from '@/components/user-cell';
 import {
   Card,
   Metric,
@@ -5,245 +8,261 @@ import {
   AreaChart,
   BadgeDelta,
   Flex,
-  DeltaType,
   List,
   ListItem,
-  Icon,
   Bold,
   Title,
-  Button,
-  Color,
-  Grid
+  Button
 } from '@tremor/react';
-import { ArrowRightIcon, BriefcaseIcon } from 'lucide-react';
-
-const data = [
-  {
-    Month: 'Jan 21',
-    Sales: 2890,
-    Profit: 2400,
-    Customers: 4938
-  },
-  {
-    Month: 'Feb 21',
-    Sales: 1890,
-    Profit: 1398,
-    Customers: 2938
-  },
-  // ...
-  {
-    Month: 'Jul 21',
-    Sales: 3490,
-    Profit: 4300,
-    Customers: 2345
-  }
-];
-
-const categories: {
-  title: string;
-  metric: string;
-  metricPrev: string;
-  delta: string;
-  deltaType: DeltaType;
-}[] = [
-  {
-    title: 'Sales',
-    metric: '$ 12,699',
-    metricPrev: '$ 9,456',
-    delta: '34.3%',
-    deltaType: 'moderateIncrease'
-  },
-  {
-    title: 'Profit',
-    metric: '$ 12,348',
-    metricPrev: '$ 10,456',
-    delta: '18.1%',
-    deltaType: 'moderateIncrease'
-  },
-  {
-    title: 'Customers',
-    metric: '948',
-    metricPrev: '1,082',
-    delta: '12.3%',
-    deltaType: 'moderateDecrease'
-  }
-];
-
-type TransactionCategory = {
-  name: string;
-  color: Color;
-  numTransactions: number;
-  amount: string;
-};
-
-const march: TransactionCategory[] = [
-  {
-    name: 'Groceries',
-    color: 'sky',
-    numTransactions: 24,
-    amount: '$ 230'
-  },
-  {
-    name: 'IT & Office',
-    color: 'orange',
-    numTransactions: 4,
-    amount: '$ 990'
-  },
-  {
-    name: 'Travel',
-    color: 'pink',
-    numTransactions: 11,
-    amount: '$ 2,345'
-  },
-  {
-    name: 'Insurance',
-    color: 'emerald',
-    numTransactions: 2,
-    amount: '$ 1,450'
-  }
-];
-
-const april: TransactionCategory[] = [
-  {
-    name: 'Food',
-    color: 'teal',
-    numTransactions: 32,
-    amount: '$ 490'
-  },
-  {
-    name: 'Travel',
-    color: 'pink',
-    numTransactions: 3,
-    amount: '$ 678'
-  },
-  {
-    name: 'IT & Office',
-    color: 'orange',
-    numTransactions: 2,
-    amount: '$ 120'
-  },
-  {
-    name: 'Transport',
-    color: 'indigo',
-    numTransactions: 12,
-    amount: '$ 560'
-  }
-];
-
-const may: TransactionCategory[] = [
-  {
-    name: 'Sports',
-    color: 'rose',
-    numTransactions: 89,
-    amount: '$ 2,300.90'
-  },
-  {
-    name: 'Groceries',
-    color: 'emerald',
-    numTransactions: 9,
-    amount: '$ 1,087'
-  },
-  {
-    name: 'Travel',
-    color: 'pink',
-    numTransactions: 19,
-    amount: '$ 1,030'
-  },
-  {
-    name: 'Restaurants',
-    color: 'amber',
-    numTransactions: 8,
-    amount: '$ 129'
-  }
-];
-
-const months = [
-  {
-    name: 'March 2022',
-    data: march
-  },
-  {
-    name: 'April 2022',
-    data: april
-  },
-  {
-    name: 'May 2022',
-    data: may
-  }
-];
-
-const valueFormatter = (number: number) =>
-  `$ ${Intl.NumberFormat('us').format(number).toString()}`;
+import { ArrowRightIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import useSWR from 'swr';
 
 export default function IndexPage() {
+  const {
+    data: stats,
+    error,
+    mutate,
+    isLoading
+  } = useSWR(`stats`, StatsApi.get);
+
+  const router = useRouter();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">Hello! </h1>
       <div className="gap-6 grid grid-cols-3">
-        {categories.map((item) => (
-          <Card key={item.title}>
-            <Flex alignItems="start">
-              <Text>{item.title}</Text>
-              <BadgeDelta deltaType={item.deltaType}>{item.delta}</BadgeDelta>
-            </Flex>
-            <Flex
-              className="space-x-3 truncate"
-              justifyContent="start"
-              alignItems="baseline"
+        <Card>
+          <Flex alignItems="start">
+            <Text>用户</Text>
+            <BadgeDelta
+              deltaType={
+                stats.users.this_month_total === stats.users.last_month_total
+                  ? 'unchanged'
+                  : stats.users.this_month_total > stats.users.last_month_total
+                  ? 'moderateIncrease'
+                  : 'moderateDecrease'
+              }
             >
-              <Metric>{item.metric}</Metric>
-              <Text>from {item.metricPrev}</Text>
-            </Flex>
-            <AreaChart
-              className="mt-6 h-28"
-              data={data}
-              index="Month"
-              valueFormatter={valueFormatter}
-              categories={[item.title]}
-              colors={['blue']}
-              showXAxis={true}
-              showGridLines={false}
-              startEndOnly={true}
-              showYAxis={false}
-              showLegend={false}
-            />
-          </Card>
-        ))}
+              {Math.abs(
+                stats.users.this_month_total - stats.users.last_month_total
+              )}
+            </BadgeDelta>
+          </Flex>
+          <Flex
+            className="space-x-3 truncate"
+            justifyContent="start"
+            alignItems="baseline"
+          >
+            <Metric>{stats.users.total}</Metric>
+            <Text>上月今天 {stats.users.last_month_total}</Text>
+          </Flex>
+          <AreaChart
+            className="mt-6 h-28"
+            data={stats.users.recent_daily_count}
+            index="date"
+            categories={['value']}
+            colors={['blue']}
+            showXAxis={true}
+            showGridLines={false}
+            startEndOnly={true}
+            showYAxis={false}
+            showLegend={false}
+          />
+        </Card>
+
+        <Card>
+          <Flex alignItems="start">
+            <Text>支付</Text>
+            <BadgeDelta
+              deltaType={
+                stats.payments.this_month_total ===
+                stats.payments.last_month_total
+                  ? 'unchanged'
+                  : stats.payments.this_month_total >
+                    stats.payments.last_month_total
+                  ? 'moderateIncrease'
+                  : 'moderateDecrease'
+              }
+            >
+              ￥
+              {Math.abs(
+                stats.payments.this_month_total -
+                  stats.payments.last_month_total
+              ).toFixed(2)}
+            </BadgeDelta>
+          </Flex>
+          <Flex
+            className="space-x-3 truncate"
+            justifyContent="start"
+            alignItems="baseline"
+          >
+            <Metric>￥{stats.payments.total}</Metric>
+            <Text>上月今天 ￥{stats.payments.last_month_total}</Text>
+          </Flex>
+          <AreaChart
+            className="mt-6 h-28"
+            data={stats.payments.recent_daily_amount}
+            index="date"
+            categories={['value']}
+            colors={['blue']}
+            showXAxis={true}
+            showGridLines={false}
+            startEndOnly={true}
+            showYAxis={false}
+            showLegend={false}
+          />
+        </Card>
+
+        <Card>
+          <Flex alignItems="start">
+            <Text>对话</Text>
+            <BadgeDelta
+              deltaType={
+                stats.conversations.this_month_total ===
+                stats.conversations.last_month_total
+                  ? 'unchanged'
+                  : stats.conversations.this_month_total >
+                    stats.conversations.last_month_total
+                  ? 'moderateIncrease'
+                  : 'moderateDecrease'
+              }
+            >
+              {Math.abs(
+                stats.conversations.this_month_total -
+                  stats.conversations.last_month_total
+              )}
+            </BadgeDelta>
+          </Flex>
+          <Flex
+            className="space-x-3 truncate"
+            justifyContent="start"
+            alignItems="baseline"
+          >
+            <Metric>{stats.conversations.total}</Metric>
+            <Text>上月今天 {stats.conversations.last_month_total}</Text>
+          </Flex>
+          <AreaChart
+            className="mt-6 h-28"
+            data={stats.conversations.recent_daily_count}
+            index="date"
+            categories={['value']}
+            colors={['blue']}
+            showXAxis={true}
+            showGridLines={false}
+            startEndOnly={true}
+            showYAxis={false}
+            showLegend={false}
+          />
+        </Card>
       </div>
 
       <div className="gap-6 grid grid-cols-3">
-        {months.map((item) => (
-          <Card key={item.name}>
-            <Title>Transaction Volume</Title>
-            <Text>{item.name}</Text>
-            <List className="mt-4">
-              {item.data.map((transaction) => (
-                <ListItem key={transaction.name}>
+        <Card>
+          <Title>活跃用户</Title>
+          <Text>按照用户的会话数量排行</Text>
+          <List className="mt-4">
+            {stats.users.leaderboards.by_conversation_count.map(
+              (item: {
+                user: { id: number; name: string; avatar: string };
+                count: number;
+              }) => (
+                <ListItem key={item.user.id}>
                   <Flex justifyContent="start" className="truncate space-x-4">
-                    <div className="truncate">
+                    <div className="truncate py-1">
                       <Text className="truncate">
-                        <Bold>{transaction.name}</Bold>
-                      </Text>
-                      <Text className="truncate">
-                        {`${transaction.numTransactions} transactions`}
+                        <UserCell user={item.user} />
                       </Text>
                     </div>
                   </Flex>
-                  <Text>{transaction.amount}</Text>
+                  <Text>{item.count} 次</Text>
                 </ListItem>
-              ))}
-            </List>
-            <Button
-              size="sm"
-              variant="light"
-              icon={ArrowRightIcon}
-              iconPosition="right"
-              className="mt-4"
-            >
-              View details
-            </Button>
-          </Card>
-        ))}
+              )
+            )}
+          </List>
+          <Button
+            size="sm"
+            variant="light"
+            icon={ArrowRightIcon}
+            iconPosition="right"
+            className="mt-4"
+            onClick={() => router.push('/users')}
+          >
+            查看全部
+          </Button>
+        </Card>
+
+        <Card>
+          <Title>金主爸爸</Title>
+          <Text>按照用户的付费金额排行</Text>
+          <List className="mt-4">
+            {stats.users.leaderboards.by_payment_total.map(
+              (item: {
+                user: { id: number; name: string; avatar: string };
+                paid_total: number;
+              }) => (
+                <ListItem key={item.user.id}>
+                  <Flex justifyContent="start" className="truncate space-x-4">
+                    <div className="truncate py-1">
+                      <Text className="truncate">
+                        <UserCell user={item.user} />
+                      </Text>
+                    </div>
+                  </Flex>
+                  <Text>￥{item.paid_total}</Text>
+                </ListItem>
+              )
+            )}
+          </List>
+          <Button
+            size="sm"
+            variant="light"
+            icon={ArrowRightIcon}
+            iconPosition="right"
+            className="mt-4"
+            onClick={() => router.push('/payments')}
+          >
+            查看全部
+          </Button>
+        </Card>
+
+        <Card>
+          <Title>社交达人</Title>
+          <Text>按照用户的邀请人数排行</Text>
+          <List className="mt-4">
+            {stats.users.leaderboards.by_invitation_count.map(
+              (item: {
+                user: { id: number; name: string; avatar: string };
+                referrals_count: number;
+              }) => (
+                <ListItem key={item.user.id}>
+                  <Flex justifyContent="start" className="truncate space-x-4">
+                    <div className="truncate py-1">
+                      <Text className="truncate">
+                        <UserCell user={item.user} />
+                      </Text>
+                    </div>
+                  </Flex>
+                  <Text>{item.referrals_count} 人</Text>
+                </ListItem>
+              )
+            )}
+          </List>
+          <Button
+            size="sm"
+            variant="light"
+            icon={ArrowRightIcon}
+            iconPosition="right"
+            className="mt-4"
+            onClick={() => router.push('/payments')}
+          >
+            查看全部
+          </Button>
+        </Card>
       </div>
     </div>
   );

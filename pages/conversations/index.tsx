@@ -25,6 +25,7 @@ import UserCell from '@/components/user-cell';
 import { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
 import { Button } from '@/components/ui/button';
+import { MessageSquareIcon } from 'lucide-react';
 
 export default function ConversationPage() {
   const router = useRouter();
@@ -57,9 +58,14 @@ export default function ConversationPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>对话</Title>
-        <div className="text-gray-500">
-          <small>共 {data?.total || 0} 条记录</small>
+        <div className="flex items-end gap-4 leading-none">
+          <Title className="leading-none flex items-center gap-2">
+            <MessageSquareIcon size={24} />
+            <span>对话</span>
+          </Title>
+          <div className="text-gray-500">
+            <small>共 {data?.total || 0} 条记录</small>
+          </div>
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -120,7 +126,7 @@ export default function ConversationPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-t pt-4">
           <ReactPaginate
             initialPage={data.current_page - 1}
             pageCount={data.last_page}

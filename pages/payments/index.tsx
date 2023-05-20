@@ -26,6 +26,7 @@ import { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
 import PaymentState from '../../components/payment-state';
 import { Button } from '@/components/ui/button';
+import { CreditCardIcon } from 'lucide-react';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -57,9 +58,14 @@ export default function PaymentPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>订单</Title>
-        <div className="text-gray-500">
-          <small>共 {data?.total || 0} 条记录</small>
+        <div className="flex items-end gap-4 leading-none">
+          <Title className="leading-none flex items-center gap-2">
+            <CreditCardIcon size={24} />
+            <span>订单</span>
+          </Title>
+          <div className="text-gray-500">
+            <small>共 {data?.total || 0} 条记录</small>
+          </div>
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -124,7 +130,7 @@ export default function PaymentPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-t pt-4">
           <ReactPaginate
             initialPage={data.current_page - 1}
             pageCount={data.last_page}

@@ -1,5 +1,6 @@
 import Loading from '@/components/loading';
 import useAuth from '@/hooks/useAuth';
+import { CheckIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -50,7 +51,11 @@ export default function OauthCallback() {
           )}
           {state === 'success' && (
             <>
-              <div>登录成功，正在前往控制台...</div>
+              <div>登录成功</div>
+              <div className="rounded-full flex items-center justify-center p-2 bg-green-600 text-white">
+                <CheckIcon size={18} />
+              </div>
+              <div>正在前往控制台...</div>
             </>
           )}
         </div>

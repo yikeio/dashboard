@@ -2,7 +2,7 @@
  * 获取跳转地址
  * @returns
  */
-export function getAuthRedirectUrl(driver: string = 'github') {
+export function getAuthRedirectUrl(driver: string = 'dashboard') {
   return `${process.env.NEXT_PUBLIC_API_BASE_URI}/auth/redirect?driver=${driver}`;
 }
 

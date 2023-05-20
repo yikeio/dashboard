@@ -25,7 +25,7 @@ import { toast } from 'react-hot-toast';
 import ReactPaginate from 'react-paginate';
 import { pagginationHandler } from '@/lib/utils';
 import { useRouter } from 'next/router';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, TerminalSquareIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function PromptPage() {
@@ -68,8 +68,14 @@ export default function PromptPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Title>角色</Title>
+        <div className="flex items-end gap-4 leading-none">
+          <Title className="leading-none flex items-center gap-2">
+            <TerminalSquareIcon size={24} />
+            <span>角色</span>
+          </Title>
+          <small className="text-gray-500">共 {data?.total || 0} 条记录</small>
+        </div>
+        <div>
           <Button
             size="sm"
             className="flex items-center justify-center gap-2"
@@ -77,9 +83,6 @@ export default function PromptPage() {
           >
             <PlusIcon size={16} /> <span>新建</span>
           </Button>
-        </div>
-        <div className="text-gray-500">
-          <small>共 {data?.total || 0} 条记录</small>
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -140,7 +143,7 @@ export default function PromptPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-t pt-4">
           <ReactPaginate
             initialPage={data.current_page - 1}
             pageCount={data.last_page}

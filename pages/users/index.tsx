@@ -25,6 +25,7 @@ import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { UserIcon } from 'lucide-react';
 
 export default function UserPage() {
   const router = useRouter();
@@ -61,9 +62,14 @@ export default function UserPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>用户</Title>
-        <div className="text-gray-500">
-          <small>共 {data?.total || 0} 条记录</small>
+        <div className="flex items-end gap-4 leading-none">
+          <Title className="leading-none flex items-center gap-2">
+            <UserIcon size={24} />
+            <span>用户</span>
+          </Title>
+          <div className="text-gray-500">
+            <small>共 {data?.total || 0} 条记录</small>
+          </div>
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -114,7 +120,7 @@ export default function UserPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-t pt-4">
           <ReactPaginate
             initialPage={data.current_page - 1}
             pageCount={data.last_page}

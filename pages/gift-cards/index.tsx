@@ -26,6 +26,7 @@ import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
 import GiftCardState from '../../components/gift-card-state';
 import { Button } from '@/components/ui/button';
+import { GiftIcon } from 'lucide-react';
 
 export default function GiftCardPage() {
   const router = useRouter();
@@ -64,9 +65,14 @@ export default function GiftCardPage() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <Title>角色</Title>
-        <div className="text-gray-500">
-          <small>共 {data?.total || 0} 条记录</small>
+        <div className="flex items-end gap-4 leading-none">
+          <Title className="leading-none flex items-center gap-2">
+            <GiftIcon size={24} />
+            <span>礼品卡</span>
+          </Title>
+          <div className="text-gray-500">
+            <small>共 {data?.total || 0} 条记录</small>
+          </div>
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -135,7 +141,7 @@ export default function GiftCardPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end border-t pt-4">
           <ReactPaginate
             initialPage={data.current_page - 1}
             pageCount={data.last_page}
