@@ -25,7 +25,7 @@ import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { User, UserIcon } from 'lucide-react';
+import { UserIcon } from 'lucide-react';
 import UserDetails from '@/components/user/details';
 import UserState from '@/components/user/state';
 
