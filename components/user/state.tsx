@@ -1,6 +1,5 @@
 import { User } from '@/api/users';
-import { Badge } from '@tremor/react';
-import classNames from 'classnames';
+import { Badge, Color } from '@tremor/react';
 
 export default function UserState({ user }: { user: User }) {
   const states = {
@@ -15,7 +14,7 @@ export default function UserState({ user }: { user: User }) {
   const state = states[user.state];
 
   return (
-    <Badge size="xs" color={state.color}>
+    <Badge size="xs" color={state.color as Color}>
       {state.label}
     </Badge>
   );

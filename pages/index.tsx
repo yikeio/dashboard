@@ -1,4 +1,5 @@
 import StatsApi from '@/api/stats';
+import { User } from '@/api/users';
 import Error from '@/components/error';
 import Loading from '@/components/loading';
 import UserCell from '@/components/user-cell';
@@ -172,10 +173,7 @@ export default function IndexPage() {
           <Text>按照用户的会话数量排行</Text>
           <List className="mt-4">
             {stats.users.leaderboards.by_conversation_count.map(
-              (item: {
-                user: { id: number; name: string; avatar: string };
-                count: number;
-              }) => (
+              (item: { user: User; count: number }) => (
                 <ListItem key={item.user.id}>
                   <Flex justifyContent="start" className="truncate space-x-4">
                     <div className="truncate py-1">
@@ -206,10 +204,7 @@ export default function IndexPage() {
           <Text>按照用户的付费金额排行</Text>
           <List className="mt-4">
             {stats.users.leaderboards.by_payment_total.map(
-              (item: {
-                user: { id: number; name: string; avatar: string };
-                paid_total: number;
-              }) => (
+              (item: { user: User; paid_total: number }) => (
                 <ListItem key={item.user.id}>
                   <Flex justifyContent="start" className="truncate space-x-4">
                     <div className="truncate py-1">
@@ -240,10 +235,7 @@ export default function IndexPage() {
           <Text>按照用户的邀请人数排行</Text>
           <List className="mt-4">
             {stats.users.leaderboards.by_invitation_count.map(
-              (item: {
-                user: { id: number; name: string; avatar: string };
-                referrals_count: number;
-              }) => (
+              (item: { user: User; referrals_count: number }) => (
                 <ListItem key={item.user.id}>
                   <Flex justifyContent="start" className="truncate space-x-4">
                     <div className="truncate py-1">

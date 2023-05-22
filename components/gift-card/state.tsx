@@ -1,5 +1,5 @@
 import { GiftCard } from '@/api/gift-cards';
-import { Badge } from '@tremor/react';
+import { Badge, Color } from '@tremor/react';
 
 export default function GiftCardState({ giftCard }: { giftCard: GiftCard }) {
   const states = {
@@ -11,7 +11,7 @@ export default function GiftCardState({ giftCard }: { giftCard: GiftCard }) {
   const state = states[giftCard.state];
 
   return (
-    <Badge size="xs" color={state.color}>
+    <Badge size="xs" color={state.color as Color}>
       {state.label}
     </Badge>
   );

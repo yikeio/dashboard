@@ -1,5 +1,5 @@
 import { Payment } from '@/api/payments';
-import { Badge } from '@tremor/react';
+import { Badge, Color } from '@tremor/react';
 
 export default function PaymentState({ payment }: { payment: Payment }) {
   const states = {
@@ -11,7 +11,7 @@ export default function PaymentState({ payment }: { payment: Payment }) {
   const state = states[payment.state];
 
   return (
-    <Badge size="xs" color={state.color}>
+    <Badge size="xs" color={state.color as Color}>
       {state.label}
     </Badge>
   );
