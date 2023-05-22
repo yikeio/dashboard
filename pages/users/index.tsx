@@ -25,7 +25,7 @@ import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { UserIcon } from 'lucide-react';
+import { User, UserIcon } from 'lucide-react';
 import UserDetails from '@/components/user/details';
 import UserState from '@/components/user/state';
 
@@ -99,7 +99,9 @@ export default function UserPage() {
                 </TableCell>
                 <TableCell>{user.phone_number || '-'}</TableCell>
                 <TableCell>{user.email || '-'}</TableCell>
-                <TableCell>{user.referrer?.name || '--'}</TableCell>
+                <TableCell>
+                  {user.referrer ? <UserCell user={user.referrer} /> : '-'}
+                </TableCell>
                 <TableCell className="text-center">
                   <UserState user={user} />
                 </TableCell>
