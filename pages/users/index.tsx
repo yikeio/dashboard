@@ -26,6 +26,8 @@ import { useRouter } from 'next/router';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { UserIcon } from 'lucide-react';
+import UserDetails from '@/components/user/details';
+import UserState from '@/components/user/state';
 
 export default function UserPage() {
   const router = useRouter();
@@ -79,7 +81,9 @@ export default function UserPage() {
               <TableHeaderCell className="w-28">ID</TableHeaderCell>
               <TableHeaderCell className="w-32">名称</TableHeaderCell>
               <TableHeaderCell>手机号</TableHeaderCell>
+              <TableHeaderCell>Email</TableHeaderCell>
               <TableHeaderCell>邀请者</TableHeaderCell>
+              <TableHeaderCell className="text-center">状态</TableHeaderCell>
               <TableHeaderCell className="text-center">
                 注册时间
               </TableHeaderCell>
@@ -93,8 +97,12 @@ export default function UserPage() {
                 <TableCell>
                   <UserCell user={user} />
                 </TableCell>
-                <TableCell>{user.phone_number}</TableCell>
+                <TableCell>{user.phone_number || '-'}</TableCell>
+                <TableCell>{user.email || '-'}</TableCell>
                 <TableCell>{user.referrer?.name || '--'}</TableCell>
+                <TableCell className="text-center">
+                  <UserState user={user} />
+                </TableCell>
                 <TableCell className="text-center">
                   {user.created_at ? formatDatetime(user.created_at) : '-'}
                 </TableCell>
@@ -105,7 +113,7 @@ export default function UserPage() {
                     className="h-5"
                     onClick={() => handleEdit(user)}
                   >
-                    编辑
+                    查看
                   </Button>
                   <Button
                     variant="link"
@@ -132,11 +140,11 @@ export default function UserPage() {
         open={showFormModal}
         onOpenChange={(v: boolean) => setShowFormModal(v)}
       >
-        <DialogContent className="sm:max-w-4xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>用户详情</DialogTitle>
           </DialogHeader>
-          {JSON.stringify(selectedUser)}
+          <UserDetails user={selectedUser!} />
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>

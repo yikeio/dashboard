@@ -1,6 +1,7 @@
 import { User } from '@/api/users';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import classNames from 'classnames';
+import { Badge } from '@tremor/react';
 
 export default function UserCell(props: { user: User }) {
   const fallbackAvatarBackgroundColors = [
@@ -28,7 +29,14 @@ export default function UserCell(props: { user: User }) {
           </span>
         </AvatarFallback>
       </Avatar>
-      <div>{props.user.name}</div>
+      <div className="flex items-center gap-2">
+        <div>{props.user.name}</div>
+        {props.user.is_admin && (
+          <Badge size="xs" color="green">
+            管理员
+          </Badge>
+        )}
+      </div>
     </div>
   );
 }

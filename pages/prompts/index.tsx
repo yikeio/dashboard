@@ -10,7 +10,7 @@ import {
 } from '@tremor/react';
 import useSWR from 'swr';
 import { useState } from 'react';
-import PromptForm from '../../components/prompt-form';
+import PromptForm from '../../components/prompt/form';
 import {
   Dialog,
   DialogContent,

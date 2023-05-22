@@ -20,13 +20,14 @@ import {
 import paymentApi, { Payment } from '@/api/payments';
 import Loading from '@/components/loading';
 import { toast } from 'react-hot-toast';
-import { formatDatetime, formatTimeAgo, pagginationHandler } from '@/lib/utils';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import UserCell from '@/components/user-cell';
 import { useRouter } from 'next/router';
 import ReactPaginate from 'react-paginate';
-import PaymentState from '../../components/payment-state';
+import PaymentState from '../../components/payment/state';
 import { Button } from '@/components/ui/button';
 import { CreditCardIcon } from 'lucide-react';
+import PaymentDetails from '@/components/payment/details';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -142,11 +143,11 @@ export default function PaymentPage() {
         open={showDetailModal}
         onOpenChange={(v: boolean) => setShowDetailModal(v)}
       >
-        <DialogContent className="sm:max-w-4xl">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>编辑</DialogTitle>
+            <DialogTitle>订单详情</DialogTitle>
           </DialogHeader>
-          {JSON.stringify(selectedPayment)}
+          <PaymentDetails payment={selectedPayment!} />
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>

@@ -11,12 +11,13 @@ export interface User {
   referral_code?: string;
   referrals_count?: number;
   phone_number?: string;
+  email?: string;
   is_admin?: boolean;
   first_active_at?: string;
   last_active_at?: string;
-  state?: string;
+  state: 'activated' | 'unactivated' | 'banned';
   referrer?: User;
-  paid_total?: string;
+  paid_total: number;
   created_at?: string;
   updated_at?: string;
 }

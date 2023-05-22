@@ -44,6 +44,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-6">
           <div className="flex flex-shrink-0 items-center p-2">
             <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+            <span className="ml-2 text-xl font-bold">一刻控制台</span>
           </div>
           <div className="flex flex-col gap-2">
             {navigation.map((item) => (

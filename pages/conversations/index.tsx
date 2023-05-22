@@ -105,14 +105,14 @@ export default function ConversationPage() {
                   </Text>
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-6">
-                  <Button
+                  {/* <Button
                     variant="link"
                     size="sm"
                     className="h-5"
                     onClick={() => handleView(conversation)}
                   >
                     查看
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="link"
                     size="sm"

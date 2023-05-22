@@ -1,4 +1,5 @@
 import StatsApi from '@/api/stats';
+import Error from '@/components/error';
 import Loading from '@/components/loading';
 import UserCell from '@/components/user-cell';
 import {
@@ -32,6 +33,10 @@ export default function IndexPage() {
     return <Loading />;
   }
 
+  if (error) {
+    return <Error message={error.message} />;
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">Hello! </h1>
@@ -62,7 +67,7 @@ export default function IndexPage() {
             <Text>上月今天 {stats.users.last_month_total}</Text>
           </Flex>
           <AreaChart
-            className="mt-6 h-28"
+            className="mt-6 h-20"
             data={stats.users.recent_daily_count}
             index="date"
             categories={['value']}
@@ -105,7 +110,7 @@ export default function IndexPage() {
             <Text>上月今天 ￥{stats.payments.last_month_total}</Text>
           </Flex>
           <AreaChart
-            className="mt-6 h-28"
+            className="mt-6 h-20"
             data={stats.payments.recent_daily_amount}
             index="date"
             categories={['value']}
@@ -147,7 +152,7 @@ export default function IndexPage() {
             <Text>上月今天 {stats.conversations.last_month_total}</Text>
           </Flex>
           <AreaChart
-            className="mt-6 h-28"
+            className="mt-6 h-20"
             data={stats.conversations.recent_daily_count}
             index="date"
             categories={['value']}
