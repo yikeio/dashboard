@@ -101,7 +101,9 @@ export default function PaymentPage() {
                   <Text>￥{payment.amount}</Text>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Text>{payment.paid_at || '--'}</Text>
+                  <Text>
+                    {payment.paid_at ? formatDatetime(payment.paid_at) : '-'}
+                  </Text>
                 </TableCell>
                 <TableCell className="text-center">
                   <PaymentState payment={payment} />
