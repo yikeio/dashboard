@@ -64,7 +64,7 @@ export default function IndexPage() {
             alignItems="baseline"
           >
             <Metric>{stats.users.total}</Metric>
-            <Text>上月今天 {stats.users.last_month_total}</Text>
+            <Text>上月 {stats.users.last_month_total}</Text>
           </Flex>
           <AreaChart
             className="mt-6 h-20"
@@ -107,7 +107,7 @@ export default function IndexPage() {
             alignItems="baseline"
           >
             <Metric>￥{stats.payments.total}</Metric>
-            <Text>上月今天 ￥{stats.payments.last_month_total}</Text>
+            <Text>上月 ￥{stats.payments.last_month_total}</Text>
           </Flex>
           <AreaChart
             className="mt-6 h-20"
@@ -149,7 +149,7 @@ export default function IndexPage() {
             alignItems="baseline"
           >
             <Metric>{stats.conversations.total}</Metric>
-            <Text>上月今天 {stats.conversations.last_month_total}</Text>
+            <Text>上月 {stats.conversations.last_month_total}</Text>
           </Flex>
           <AreaChart
             className="mt-6 h-20"
