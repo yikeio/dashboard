@@ -25,12 +25,13 @@ export default function UserCell(props: { user: User }) {
         {props.user.avatar && <AvatarImage src={props.user.avatar} />}
         <AvatarFallback className={classNames(fallbackAvatarBackgroundColor)}>
           <span className="text-white text-sm">
-            {props.user.name.substring(0, 1)}
+            {props.user.name?.substring(0, 1) ||
+              props.user.id.toString().substring(0, 1)}
           </span>
         </AvatarFallback>
       </Avatar>
       <div className="flex items-center gap-2">
-        <div>{props.user.name}</div>
+        <div>{props.user.name || props.user.id}</div>
         {props.user.is_admin && (
           <Badge size="xs" color="green">
             管理员
