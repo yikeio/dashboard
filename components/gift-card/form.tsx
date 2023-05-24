@@ -15,6 +15,7 @@ export interface GiftCardProps {
 export default function GiftCardForm(props: GiftCardProps) {
   const [giftCard, setGiftCard] = useState<GiftCard>(
     props.giftCard || {
+      id: 0,
       name: '',
       code: '',
       tokens_count: 0,

@@ -90,7 +90,6 @@ export default function PromptPage() {
           <TableHead>
             <TableRow>
               <TableHeaderCell className="w-28">ID</TableHeaderCell>
-              <TableHeaderCell className="text-center">图标</TableHeaderCell>
               <TableHeaderCell>名称</TableHeaderCell>
               <TableHeaderCell>描述</TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
@@ -100,18 +99,18 @@ export default function PromptPage() {
             {data.data.map((prompt: Prompt) => (
               <TableRow key={prompt.id}>
                 <TableCell>{prompt.id}</TableCell>
-                <TableCell className="flex items-center justify-center">
-                  <Avatar
-                    onClick={() => handleEdit(prompt)}
-                    className="h-5 w-5"
-                  >
-                    <AvatarFallback className="text-xl">
-                      {prompt.logo || ''}
-                    </AvatarFallback>
-                  </Avatar>
-                </TableCell>
                 <TableCell onClick={() => handleEdit(prompt)}>
-                  {prompt.name}
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      onClick={() => handleEdit(prompt)}
+                      className="h-6 w-6"
+                    >
+                      <AvatarFallback className="text-xl">
+                        {prompt.logo || ''}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>{prompt.name}</div>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <Text

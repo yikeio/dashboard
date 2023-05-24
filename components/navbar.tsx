@@ -25,6 +25,11 @@ const navigation = [
     icon: <MessageSquareIcon size={16} />,
     href: '/conversations'
   },
+  {
+    name: '消息',
+    icon: <MessageSquareIcon size={16} />,
+    href: '/messages'
+  },
   { name: '角色', icon: <TerminalSquareIcon size={16} />, href: '/prompts' },
   { name: '礼品卡', icon: <GiftIcon size={16} />, href: '/gift-cards' },
   { name: '设置', icon: <Settings2Icon size={16} />, href: '/settings' }

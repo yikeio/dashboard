@@ -1,7 +1,7 @@
 import { request } from '@/lib/request';
 
 export interface Prompt {
-  id?: number;
+  id: number;
   name: string;
   logo?: string;
   description?: string;

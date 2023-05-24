@@ -6,10 +6,10 @@ export interface User {
   avatar?: string;
   root_referrer_id?: number;
   referrer_id?: number;
-  level?: number;
+  level: number;
   referrer_path?: string;
   referral_code?: string;
-  referrals_count?: number;
+  referrals_count: number;
   phone_number?: string;
   email?: string;
   is_admin?: boolean;
@@ -23,8 +23,8 @@ export interface User {
 }
 
 export default class UserApi {
-  static list(page = 1) {
-    return request(`users?page=${page}`);
+  static list({ page = 1, search = '' }) {
+    return request(`users?page=${page}&search=${search}`);
   }
 
   static get() {

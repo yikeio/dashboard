@@ -17,7 +17,7 @@ export interface PromptProps {
 
 export default function PromptForm(props: PromptProps) {
   const [prompt, setPrompt] = useState<Prompt>(
-    props.prompt || { name: '', sort_order: 0 }
+    props.prompt || { id: 0, name: '', sort_order: 0 }
   );
 
   const updateValue = (key: string, value: string) => {

@@ -2,7 +2,7 @@ import { request } from '@/lib/request';
 import { User } from './users';
 
 export interface GiftCard {
-  id?: number;
+  id: number;
   name: string;
   code: string;
   user_id?: number;

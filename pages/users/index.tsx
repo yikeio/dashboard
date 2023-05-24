@@ -6,10 +6,11 @@ import {
   TableHeaderCell,
   TableRow,
   Text,
+  TextInput,
   Title
 } from '@tremor/react';
 import useSWR from 'swr';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -25,17 +26,28 @@ import ReactPaginate from 'react-paginate';
 import { useRouter } from 'next/router';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { UserIcon } from 'lucide-react';
+import { SearchIcon, UserIcon } from 'lucide-react';
 import UserDetails from '@/components/user/details';
 import UserState from '@/components/user/state';
+import { debounce } from 'lodash';
+import EmptyState from '@/components/empty-state';
 
 export default function UserPage() {
   const router = useRouter();
   const { data, error, mutate, isLoading } = useSWR(`users`, () =>
-    userApi.list(parseInt((router.query.page as string) || '1'))
+    userApi.list(router.query)
   );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [search, setSearch] = useState(router.query.search as string);
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    router.push({
+      pathname: '/users',
+      query: { ...router.query, search: e.target.value }
+    });
+  };
 
   const handleEdit = (user: User) => {
     setSelectedUser(user);
@@ -50,11 +62,6 @@ export default function UserPage() {
     await userApi.delete(user.id!);
     mutate();
     toast.success('已删除');
-  };
-
-  const handleFormSaved = (user?: User) => {
-    mutate();
-    setShowFormModal(false);
   };
 
   if (isLoading || error) {
@@ -72,6 +79,15 @@ export default function UserPage() {
           <div className="text-gray-500">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
+        </div>
+        <div>
+          <TextInput
+            icon={SearchIcon}
+            value={search}
+            onChange={handleSearchInputChange}
+            onCompositionEnd={() => mutate()}
+            placeholder="Search..."
+          />
         </div>
       </div>
       <div className="rounded-lg border bg-white px-6 py-4 mt-6">
@@ -91,6 +107,22 @@ export default function UserPage() {
             </TableRow>
           </TableHead>
           <TableBody>
+            {data.data.length <= 0 && (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <div className="flex items-center justify-center">
+                    <EmptyState
+                      className="h-32"
+                      message={
+                        router.query.search
+                          ? `没有找到与 "${router.query.search}" 匹配的相关记录`
+                          : '暂无数据'
+                      }
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
             {data.data.map((user: User) => (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
@@ -130,13 +162,15 @@ export default function UserPage() {
             ))}
           </TableBody>
         </Table>
-        <div className="flex items-center justify-end border-t pt-4">
-          <ReactPaginate
-            initialPage={data.current_page - 1}
-            pageCount={data.last_page}
-            onPageChange={pagginationHandler(router)}
-          />
-        </div>
+        {data.data.length > 0 && (
+          <div className="flex items-center justify-end border-t pt-4">
+            <ReactPaginate
+              initialPage={data.current_page - 1}
+              pageCount={data.last_page}
+              onPageChange={pagginationHandler(router)}
+            />
+          </div>
+        )}
       </div>
       <Dialog
         open={showFormModal}

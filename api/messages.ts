@@ -1,12 +1,16 @@
 import { request } from '@/lib/request';
 import { User } from './users';
+import { Conversation } from './conversations';
 
-export interface Conversation {
+export interface Message {
   id: number;
+  quota_id: number;
   creator_id: number;
   creator: User;
-  title: string;
-  messages_count: number;
+  conversation_id: number;
+  conversation: Conversation;
+  role: string;
+  content: string;
   tokens_count: number;
   first_active_at?: string;
   last_active_at?: string;
@@ -14,13 +18,13 @@ export interface Conversation {
   updated_at: string;
 }
 
-export default class ConversationApi {
+export default class MessageApi {
   static list(page = 1) {
-    return request(`conversations?page=${page}`);
+    return request(`messages?page=${page}`);
   }
 
   static delete(id: number) {
-    return request(`conversations/${id}`, {
+    return request(`messages/${id}`, {
       method: 'DELETE'
     });
   }
