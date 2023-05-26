@@ -27,7 +27,7 @@ export default class UserApi {
     return request(`users?page=${page}&search=${search}`);
   }
 
-  static get() {
+  static getAuthUser(): Promise<User> {
     return request(`user`);
   }
 

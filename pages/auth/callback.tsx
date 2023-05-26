@@ -15,7 +15,7 @@ export default function OauthCallback() {
   useEffect(() => {
     if (query.has('code') && query.has('state')) {
       auth
-        .handleCallback(
+        .handleOauthCallback(
           query.get('code') as string,
           query.get('state') as string
         )

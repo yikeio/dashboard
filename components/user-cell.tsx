@@ -2,8 +2,17 @@ import { User } from '@/api/users';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import classNames from 'classnames';
 import { Badge } from '@tremor/react';
+import { twMerge } from 'tailwind-merge';
 
-export default function UserCell(props: { user: User }) {
+export default function UserCell({
+  showRole = true,
+  className = '',
+  user
+}: {
+  showRole?: boolean;
+  className?: string;
+  user: User;
+}) {
   const fallbackAvatarBackgroundColors = [
     'bg-red-500',
     'bg-green-500',
@@ -16,23 +25,22 @@ export default function UserCell(props: { user: User }) {
 
   const fallbackAvatarBackgroundColor =
     fallbackAvatarBackgroundColors[
-      props.user.id % fallbackAvatarBackgroundColors.length
+      user.id % fallbackAvatarBackgroundColors.length
     ];
 
   return (
     <div className="flex items-center gap-2">
-      <Avatar className="h-5 w-5">
-        {props.user.avatar && <AvatarImage src={props.user.avatar} />}
+      <Avatar className={twMerge('h-5 w-5', className)}>
+        {user.avatar && <AvatarImage src={user.avatar} />}
         <AvatarFallback className={classNames(fallbackAvatarBackgroundColor)}>
           <span className="text-white text-sm">
-            {props.user.name?.substring(0, 1) ||
-              props.user.id.toString().substring(0, 1)}
+            {user.name?.substring(0, 1) || user.id.toString().substring(0, 1)}
           </span>
         </AvatarFallback>
       </Avatar>
       <div className="flex items-center gap-2">
-        <div>{props.user.name || props.user.id}</div>
-        {props.user.is_admin && (
+        <div>{user.name || user.id}</div>
+        {user.is_admin && showRole && (
           <Badge size="xs" color="green">
             管理员
           </Badge>

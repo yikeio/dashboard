@@ -7,6 +7,7 @@ import {
   CreditCardIcon,
   GiftIcon,
   LayoutGridIcon,
+  LogOutIcon,
   MessageSquareIcon,
   Settings2Icon,
   TerminalSquareIcon,
@@ -15,6 +16,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
 import useAuth from '@/hooks/useAuth';
+import UserCell from './user-cell';
 
 const navigation = [
   { name: '首页', icon: <LayoutGridIcon size={16} />, href: '/' },
@@ -70,16 +72,23 @@ export default function Navbar() {
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-4 absolute bottom-0 right-0 left-0 pb-4 border-t p-4">
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full"
-            onClick={handleLogout}
-          >
-            注销
-          </Button>
-        </div>
+        {auth.user && (
+          <div className="flex items-center justify-between gap-4 absolute bottom-0 right-0 left-0 pb-4 border-t p-4">
+            <UserCell
+              user={auth.user}
+              showRole={false}
+              className="h-8 w-8"
+            ></UserCell>
+            <Button
+              variant={'outline'}
+              size={'sm'}
+              className=""
+              onClick={handleLogout}
+            >
+              <LogOutIcon size={16} />
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );

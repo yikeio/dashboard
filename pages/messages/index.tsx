@@ -138,9 +138,11 @@ export default function MessagePage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>编辑</DialogTitle>
+            <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
-          {selectedMessage?.content}
+          <div className="border text-gray-700 p-4 rounded-lg">
+            {selectedMessage?.content}
+          </div>
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
