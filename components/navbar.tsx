@@ -10,6 +10,7 @@ import {
   LogOutIcon,
   MessageSquareIcon,
   Settings2Icon,
+  TagIcon,
   TerminalSquareIcon,
   UserIcon
 } from 'lucide-react';
@@ -34,6 +35,11 @@ const navigation = [
   },
   { name: '角色', icon: <TerminalSquareIcon size={16} />, href: '/prompts' },
   { name: '礼品卡', icon: <GiftIcon size={16} />, href: '/gift-cards' },
+  {
+    name: '标签',
+    icon: <TagIcon size={16} />,
+    href: '/tags'
+  },
   { name: '设置', icon: <Settings2Icon size={16} />, href: '/settings' }
 ];
 
