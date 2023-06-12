@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Token, getToken } from '@/api/auth';
 import UserApi, { User } from '@/api/users';
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 
 export default function useAuth() {
-  const AUTH_TOKEN_KEY = 'auth.token';
-  const AUTH_USER_KEY = 'auth.user';
+  const AUTH_TOKEN_KEY = 'dashboard.auth.token';
+  const AUTH_USER_KEY = 'dashboard.auth.user';
 
   let [user, setUser] = useState<User>();
   let [hasLogged, setHasLogged] = useState(!!Cookies.get(AUTH_TOKEN_KEY));

@@ -1,10 +1,10 @@
+import GiftCardApi, { GiftCard } from '@/api/gift-cards';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import GiftCardApi, { GiftCard } from '@/api/gift-cards';
 import { formatDatetime } from '@/lib/utils';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export interface GiftCardProps {
   giftCard?: GiftCard | null;
@@ -69,7 +69,9 @@ export default function GiftCardForm(props: GiftCardProps) {
       </div>
       <div className="flex gap-2 items-center justify-end mt-4">
         <Button onClick={handleSave}>保存</Button>
-        <Button variant="secondary">取消</Button>
+        <Button variant="secondary" onClick={props.onCancel}>
+          取消
+        </Button>
       </div>
     </div>
   );

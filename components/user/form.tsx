@@ -1,11 +1,10 @@
-import { Button } from '@/components/ui/button';
-import { Textarea } from '../ui/textarea';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import EmojiPicker from '@/components/emoji-picker';
-import classNames from 'classnames';
-import { toast } from 'react-hot-toast';
 import userApi, { User } from '@/api/users';
+import EmojiPicker from '@/components/emoji-picker';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export interface UserProps {
   user: User;
@@ -63,7 +62,9 @@ export default function UserForm(props: UserProps) {
       </div>
       <div className="flex gap-2 items-center justify-end mt-4">
         <Button onClick={handleSave}>保存</Button>
-        <Button variant="secondary">取消</Button>
+        <Button variant="secondary" onClick={props.onCancel}>
+          取消
+        </Button>
       </div>
     </div>
   );

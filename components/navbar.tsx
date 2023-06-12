@@ -1,22 +1,21 @@
 'use client';
 
-import Image from 'next/image';
+import useAuth from '@/hooks/useAuth';
 import classNames from 'classnames';
-import Link from 'next/link';
 import {
   CreditCardIcon,
   GiftIcon,
   LayoutGridIcon,
   LogOutIcon,
   MessageSquareIcon,
-  Settings2Icon,
   TagIcon,
   TerminalSquareIcon,
   UserIcon
 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
-import useAuth from '@/hooks/useAuth';
 import UserCell from './user-cell';
 
 const navigation = [
@@ -39,8 +38,8 @@ const navigation = [
     name: '标签',
     icon: <TagIcon size={16} />,
     href: '/tags'
-  },
-  { name: '设置', icon: <Settings2Icon size={16} />, href: '/settings' }
+  }
+  // { name: '设置', icon: <Settings2Icon size={16} />, href: '/settings' }
 ];
 
 export default function Navbar() {
