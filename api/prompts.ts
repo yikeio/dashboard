@@ -5,6 +5,7 @@ export interface Prompt {
   name: string;
   logo?: string;
   description?: string;
+  greeting: string;
   prompt_cn?: string;
   prompt_en?: string;
   sort_order: number;

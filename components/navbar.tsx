@@ -9,8 +9,8 @@ import {
   LogOutIcon,
   MessageSquareIcon,
   TagIcon,
-  TerminalSquareIcon,
-  UserIcon
+  UserIcon,
+  Wand2Icon
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,7 +32,7 @@ const navigation = [
     icon: <MessageSquareIcon size={16} />,
     href: '/messages'
   },
-  { name: '角色', icon: <TerminalSquareIcon size={16} />, href: '/prompts' },
+  { name: '场景', icon: <Wand2Icon size={16} />, href: '/prompts' },
   { name: '礼品卡', icon: <GiftIcon size={16} />, href: '/gift-cards' },
   {
     name: '标签',

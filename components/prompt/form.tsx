@@ -15,12 +15,25 @@ export interface PromptProps {
 
 export default function PromptForm(props: PromptProps) {
   const [prompt, setPrompt] = useState<Prompt>(
-    props.prompt || { id: 0, name: '', sort_order: 0 }
+    props.prompt || {
+      id: 0,
+      name: '',
+      sort_order: 0,
+      prompt_cn: '',
+      prompt_en: '',
+      greeting: ''
+    }
   );
 
   const updateValue = (key: string, value: string) => {
+    if (key === 'sort_order') {
+      value = parseInt(value) + '';
+    }
     setPrompt((prev) => ({ ...prev, [key]: value }));
   };
+
+  const formIsReady =
+    prompt.name && prompt.prompt_cn && prompt.prompt_en && prompt.greeting;
 
   const handleSave = async () => {
     if (prompt.id) {
@@ -83,7 +96,7 @@ export default function PromptForm(props: PromptProps) {
           <div className="flex flex-col gap-2">
             <label htmlFor="prompt_cn">提示词（中文）</label>
             <Textarea
-              className="h-32"
+              className="h-20"
               value={prompt.prompt_cn}
               onChange={(e) => updateValue('prompt_cn', e.target.value)}
               placeholder="你是一个xxxx"
@@ -92,16 +105,27 @@ export default function PromptForm(props: PromptProps) {
           <div className="flex flex-col gap-2">
             <label htmlFor="prompt_en">提示词（English）</label>
             <Textarea
-              className="h-32"
+              className="h-20"
               value={prompt.prompt_en}
               onChange={(e) => updateValue('prompt_en', e.target.value)}
               placeholder="你是一个xxxx"
             />
           </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="greeting">招呼消息</label>
+            <Textarea
+              className="h-20"
+              value={prompt.greeting}
+              onChange={(e) => updateValue('greeting', e.target.value)}
+              placeholder="Hi，你可以在下方输入你想要提问的问题 ……"
+            />
+          </div>
         </div>
       </div>
       <div className="flex gap-2 items-center justify-end mt-4">
-        <Button onClick={handleSave}>保存</Button>
+        <Button onClick={handleSave} disabled={!formIsReady}>
+          保存
+        </Button>
         <Button variant="secondary" onClick={props.onCancel}>
           取消
         </Button>
