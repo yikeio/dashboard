@@ -1,17 +1,18 @@
 'use client';
 
-import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
+import type { AppProps } from 'next/app';
 import { Toaster } from 'react-hot-toast';
 
+import Head from '@/components/head';
+import Navbar from '@/components/navbar';
 import '@/styles/global.css';
 import '@/styles/paginate.css';
+import Cookies from 'js-cookie';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { SWRConfig } from 'swr';
 import { request } from '../lib/request';
-import Navbar from '@/components/navbar';
-import Cookies from 'js-cookie';
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
@@ -35,6 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
             request(resource, init).then((res) => res.result)
         }}
       >
+        <Head />
         {showNav && <Navbar></Navbar>}
         <main className="p-2 h-screen overflow-y-auto border-l md:p-6 flex-1">
           <Component {...pageProps} />
