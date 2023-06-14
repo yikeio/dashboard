@@ -89,7 +89,7 @@ export default function GiftCardPage() {
           </Button>
         </div>
       </div>
-      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
+      <div className="rounded-lg border dark:bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
