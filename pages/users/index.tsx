@@ -1,16 +1,7 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  TextInput,
-  Title
-} from '@tremor/react';
-import useSWR from 'swr';
-import { useEffect, useState } from 'react';
+import userApi, { User } from '@/api/users';
+import EmptyState from '@/components/empty-state';
+import Loading from '@/components/loading';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -18,19 +9,26 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import userApi, { User } from '@/api/users';
-import Loading from '@/components/loading';
-import { toast } from 'react-hot-toast';
 import UserCell from '@/components/user-cell';
-import ReactPaginate from 'react-paginate';
-import { useRouter } from 'next/router';
-import { formatDatetime, pagginationHandler } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { SearchIcon, UserIcon } from 'lucide-react';
 import UserDetails from '@/components/user/details';
 import UserState from '@/components/user/state';
-import { debounce } from 'lodash';
-import EmptyState from '@/components/empty-state';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  TextInput,
+  Title
+} from '@tremor/react';
+import { SearchIcon, UserIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import useSWR from 'swr';
 
 export default function UserPage() {
   const router = useRouter();
@@ -76,7 +74,7 @@ export default function UserPage() {
             <UserIcon size={24} />
             <span>用户</span>
           </Title>
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
         </div>
@@ -90,7 +88,7 @@ export default function UserPage() {
           />
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>

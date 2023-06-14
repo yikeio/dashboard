@@ -1,3 +1,16 @@
+import paymentApi, { Payment } from '@/api/payments';
+import Loading from '@/components/loading';
+import PaymentDetails from '@/components/payment/details';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import UserCell from '@/components/user-cell';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -8,31 +21,19 @@ import {
   Text,
   Title
 } from '@tremor/react';
-import useSWR from 'swr';
-import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import paymentApi, { Payment } from '@/api/payments';
-import Loading from '@/components/loading';
-import { toast } from 'react-hot-toast';
-import { formatDatetime, pagginationHandler } from '@/lib/utils';
-import UserCell from '@/components/user-cell';
-import { useRouter } from 'next/router';
-import ReactPaginate from 'react-paginate';
-import PaymentState from '../../components/payment/state';
-import { Button } from '@/components/ui/button';
 import { CreditCardIcon } from 'lucide-react';
-import PaymentDetails from '@/components/payment/details';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import useSWR from 'swr';
+import PaymentState from '../../components/payment/state';
 
 export default function PaymentPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`payments`, () =>
-    paymentApi.list(parseInt((router.query.page as string) || '1'))
+  const { data, error, mutate, isLoading } = useSWR(
+    [`payments`, router.query.page],
+    ([_, page]) => paymentApi.list(parseInt((page as string) || '1'))
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
@@ -64,12 +65,12 @@ export default function PaymentPage() {
             <CreditCardIcon size={24} />
             <span>订单</span>
           </Title>
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>

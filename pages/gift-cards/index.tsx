@@ -1,3 +1,15 @@
+import GiftCardApi, { GiftCard } from '@/api/gift-cards';
+import Loading from '@/components/loading';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import UserCell from '@/components/user-cell';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -7,31 +19,20 @@ import {
   TableRow,
   Title
 } from '@tremor/react';
-import useSWR from 'swr';
-import { useState } from 'react';
-import GiftCardForm from '../../components/gift-card/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import GiftCardApi, { GiftCard } from '@/api/gift-cards';
-import Loading from '@/components/loading';
-import { toast } from 'react-hot-toast';
-import { formatDatetime, pagginationHandler } from '@/lib/utils';
-import UserCell from '@/components/user-cell';
-import ReactPaginate from 'react-paginate';
+import { GiftIcon, PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import useSWR from 'swr';
+import GiftCardForm from '../../components/gift-card/form';
 import GiftCardState from '../../components/gift-card/state';
-import { Button } from '@/components/ui/button';
-import { GiftIcon } from 'lucide-react';
 
 export default function GiftCardPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`gift-cards`, () =>
-    GiftCardApi.list(parseInt((router.query.page as string) || '1'))
+  const { data, error, mutate, isLoading } = useSWR(
+    [`gift-cards`, router.query.page],
+    ([_, page]) => GiftCardApi.list(parseInt((page as string) || '1'))
   );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedGiftCard, setSelectedGiftCard] = useState<GiftCard | null>(
@@ -58,6 +59,10 @@ export default function GiftCardPage() {
     setShowFormModal(false);
   };
 
+  const handleNew = () => {
+    setShowFormModal(true);
+  };
+
   if (isLoading || error) {
     return <Loading />;
   }
@@ -70,12 +75,21 @@ export default function GiftCardPage() {
             <GiftIcon size={24} />
             <span>礼品卡</span>
           </Title>
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
         </div>
+        <div>
+          <Button
+            size="sm"
+            className="flex items-center justify-center gap-2"
+            onClick={handleNew}
+          >
+            <PlusIcon size={16} /> <span>新建</span>
+          </Button>
+        </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>

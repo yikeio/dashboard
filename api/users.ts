@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 
 export interface User {
   id: number;
@@ -24,23 +24,18 @@ export interface User {
 
 export default class UserApi {
   static list({ page = 1, search = '' }) {
-    return request(`users?page=${page}&search=${search}`);
+    return Request.getJson(`users?page=${page}&search=${search}`);
   }
 
   static getAuthUser(): Promise<User> {
-    return request(`user`);
+    return Request.getJson(`user`);
   }
 
   static update(id: number, user: User): Promise<User> {
-    return request(`users/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(user)
-    });
+    return Request.patchJson(`users/${id}`, user);
   }
 
   static delete(id: number) {
-    return request(`users/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`users/${id}`);
   }
 }

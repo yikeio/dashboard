@@ -1,3 +1,15 @@
+import PromptApi, { Prompt } from '@/api/prompts';
+import Loading from '@/components/loading';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import { pagginationHandler } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -8,30 +20,19 @@ import {
   Text,
   Title
 } from '@tremor/react';
-import useSWR from 'swr';
+import { PlusIcon, TerminalSquareIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import PromptForm from '../../components/prompt/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import PromptApi, { Prompt } from '@/api/prompts';
-import Loading from '@/components/loading';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'react-hot-toast';
 import ReactPaginate from 'react-paginate';
-import { pagginationHandler } from '@/lib/utils';
-import { useRouter } from 'next/router';
-import { PlusIcon, TerminalSquareIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import useSWR from 'swr';
+import PromptForm from '../../components/prompt/form';
 
 export default function PromptPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`prompts`, () =>
-    PromptApi.list(parseInt((router.query.page as string) || '1'))
+  const { data, error, mutate, isLoading } = useSWR(
+    [`prompts`, router.query.page],
+    ([_, page]) => PromptApi.list(parseInt((page as string) || '1'))
   );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
@@ -73,7 +74,9 @@ export default function PromptPage() {
             <TerminalSquareIcon size={24} />
             <span>角色</span>
           </Title>
-          <small className="text-gray-500">共 {data?.total || 0} 条记录</small>
+          <small className="text-muted-foreground">
+            共 {data?.total || 0} 条记录
+          </small>
         </div>
         <div>
           <Button
@@ -85,7 +88,7 @@ export default function PromptPage() {
           </Button>
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>

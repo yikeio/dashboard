@@ -1,7 +1,7 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 
 export default class StatsApi {
   static get() {
-    return request(`stats`);
+    return Request.getJson(`stats`);
   }
 }

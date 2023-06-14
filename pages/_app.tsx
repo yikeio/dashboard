@@ -12,7 +12,7 @@ import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { SWRConfig } from 'swr';
-import { request } from '../lib/request';
+import Request from '../lib/request';
 
 export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
@@ -21,19 +21,19 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (
       !window.location.pathname.startsWith('/auth/') &&
-      Cookies.get('auth.token') === undefined
+      Cookies.get('dashboard.auth.token') === undefined
     ) {
       window.location.href = '/auth/login';
     }
   });
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <SWRConfig
         value={{
-          refreshInterval: 5000,
+          refreshInterval: 50000,
           fetcher: (resource, init) =>
-            request(resource, init).then((res) => res.result)
+            Request.get(resource, init).then((res) => res.result)
         }}
       >
         <Head />

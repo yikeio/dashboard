@@ -1,6 +1,6 @@
-import { request } from '@/lib/request';
-import { User } from './users';
+import Request from '@/lib/request';
 import { Conversation } from './conversations';
+import { User } from './users';
 
 export interface Message {
   id: number;
@@ -20,12 +20,10 @@ export interface Message {
 
 export default class MessageApi {
   static list(page = 1) {
-    return request(`messages?page=${page}`);
+    return Request.getJson(`messages?page=${page}`);
   }
 
   static delete(id: number) {
-    return request(`messages/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`messages/${id}`);
   }
 }

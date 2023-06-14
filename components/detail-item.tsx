@@ -9,8 +9,10 @@ export default function DetailItem({
 }) {
   return (
     <div className="flex items-center gap-4">
-      <label className="w-32 text-sm text-gray-400 text-right">{label}</label>
-      <div className="text-gray-700">{children}</div>
+      <label className="w-32 text-sm text-muted-foreground text-right">
+        {label}
+      </label>
+      <div className="text-foreground">{children}</div>
     </div>
   );
 }

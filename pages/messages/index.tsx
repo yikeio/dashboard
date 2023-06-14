@@ -1,3 +1,15 @@
+import MessageApi, { Message } from '@/api/messages';
+import Loading from '@/components/loading';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import UserCell from '@/components/user-cell';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -8,29 +20,18 @@ import {
   Text,
   Title
 } from '@tremor/react';
-import useSWR from 'swr';
-import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import MessageApi, { Message } from '@/api/messages';
-import Loading from '@/components/loading';
-import { toast } from 'react-hot-toast';
-import { formatDatetime, pagginationHandler } from '@/lib/utils';
-import UserCell from '@/components/user-cell';
-import { useRouter } from 'next/router';
-import ReactPaginate from 'react-paginate';
-import { Button } from '@/components/ui/button';
 import { MessageSquareIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import useSWR from 'swr';
 
 export default function MessagePage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`messages`, () =>
-    MessageApi.list(parseInt((router.query.page as string) || '1'))
+  const { data, error, mutate, isLoading } = useSWR(
+    [`messages`, router.query.page],
+    ([_, page]) => MessageApi.list(parseInt((page as string) || '1'))
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
@@ -62,12 +63,12 @@ export default function MessagePage() {
             <MessageSquareIcon size={24} />
             <span>消息</span>
           </Title>
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
@@ -91,7 +92,7 @@ export default function MessagePage() {
                 <TableCell>{message.role}</TableCell>
                 <TableCell>
                   <div
-                    className="max-w-[10vw] xl:max-w-[30vw] truncate"
+                    className="max-w-[10vw] xl:max-w-[20vw] truncate"
                     onClick={() => handleView(message)}
                   >
                     {message.content}

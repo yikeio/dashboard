@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 import { User } from './users';
 
 export interface Payment {
@@ -22,12 +22,10 @@ export interface Payment {
 
 export default class PaymentApi {
   static list(page = 1) {
-    return request(`payments?page=${page}`);
+    return Request.getJson(`payments?page=${page}`);
   }
 
   static delete(id: number) {
-    return request(`payments/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`payments/${id}`);
   }
 }

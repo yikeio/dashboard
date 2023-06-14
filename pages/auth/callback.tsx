@@ -28,6 +28,8 @@ export default function OauthCallback() {
           console.error(error);
           setState('error');
         });
+    } else {
+      auth.logout();
     }
   });
 

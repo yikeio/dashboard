@@ -1,14 +1,21 @@
 import { getAuthRedirectUrl } from '@/api/auth';
 import { Button } from '@/components/ui/button';
+import useAuth from '@/hooks/useAuth';
 import { GithubIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export default function OauthLogin() {
   const authUrl = getAuthRedirectUrl();
+  const { logout } = useAuth();
 
   const handleRedirect = (url: string) => {
     window.location.href = url;
   };
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen">

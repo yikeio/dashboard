@@ -1,16 +1,7 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  Text,
-  Title
-} from '@tremor/react';
-import useSWR from 'swr';
-import { useState } from 'react';
-import TagForm from '../../components/tag/form';
+import TagApi, { Tag } from '@/api/tags';
+import Loading from '@/components/loading';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -18,20 +9,29 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import TagApi, { Tag } from '@/api/tags';
-import Loading from '@/components/loading';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { pagginationHandler } from '@/lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  Title
+} from '@tremor/react';
+import { PlusIcon, TagIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import ReactPaginate from 'react-paginate';
-import { pagginationHandler } from '@/lib/utils';
-import { useRouter } from 'next/router';
-import { PlusIcon, TagIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import useSWR from 'swr';
+import TagForm from '../../components/tag/form';
 
 export default function TagPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`tags`, () =>
-    TagApi.list({ page: parseInt((router.query.page as string) || '1') })
+  const { data, error, mutate, isLoading } = useSWR(
+    [`tags`, router.query.page],
+    ([_, page]) => TagApi.list({ page: parseInt((page as string) || '1') })
   );
   const [showFormModal, setShowFormModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
@@ -73,7 +73,9 @@ export default function TagPage() {
             <TagIcon size={24} />
             <span>标签</span>
           </Title>
-          <small className="text-gray-500">共 {data?.total || 0} 条记录</small>
+          <small className="text-muted-foreground">
+            共 {data?.total || 0} 条记录
+          </small>
         </div>
         <div>
           <Button
@@ -85,7 +87,7 @@ export default function TagPage() {
           </Button>
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>

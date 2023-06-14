@@ -26,6 +26,9 @@ export default function GiftCardForm(props: GiftCardProps) {
   );
 
   const updateValue = (key: string, value: string) => {
+    if (['tokens_count', 'days'].includes(key)) {
+      value = parseInt(value || '0').toString();
+    }
     setGiftCard((prev) => ({ ...prev, [key]: value }));
   };
 

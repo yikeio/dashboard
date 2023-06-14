@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 
 export interface Tag {
   id: number;
@@ -17,26 +17,18 @@ export default class TagApi {
     page?: number | string;
     search?: string;
   }) {
-    return request(`tags?page=${page}&search=${search}`);
+    return Request.getJson(`tags?page=${page}&search=${search}`);
   }
 
   static create(tag: Tag): Promise<Tag> {
-    return request(`tags`, {
-      method: 'POST',
-      body: JSON.stringify(tag)
-    });
+    return Request.postJson(`tags`, tag);
   }
 
   static update(id: number, tag: Tag): Promise<Tag> {
-    return request(`tags/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(tag)
-    });
+    return Request.patchJson(`tags/${id}`, tag);
   }
 
   static delete(id: number) {
-    return request(`tags/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`tags/${id}`);
   }
 }

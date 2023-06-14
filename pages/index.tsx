@@ -37,6 +37,7 @@ export default function IndexPage() {
   if (error) {
     return <Error message={error.message} />;
   }
+  
 
   return (
     <div className="flex flex-col gap-6">

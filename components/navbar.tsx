@@ -51,7 +51,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white h-screen shadow-sm w-48 xl:w-56 p-4 relative">
+    <nav className="bg-background h-screen shadow-sm w-48 xl:w-56 p-4 relative">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-6">
           <div className="flex flex-shrink-0 items-center p-2">
@@ -65,8 +65,8 @@ export default function Navbar() {
                 href={item.href}
                 className={classNames(
                   pathname === item.href
-                    ? ' bg-gray-100 text-gray-800'
-                    : ' text-gray-500 hover:bg-gray-100 hover:text-gray-800 ',
+                    ? ' bg-background text-foreground'
+                    : ' text-gray-500 hover:bg-muted hover:text-foreground ',
                   'relative flex gap-2 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
                 )}
                 aria-current={pathname === item.href ? 'page' : undefined}

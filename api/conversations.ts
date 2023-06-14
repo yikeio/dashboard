@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 import { User } from './users';
 
 export interface Conversation {
@@ -16,12 +16,10 @@ export interface Conversation {
 
 export default class ConversationApi {
   static list(page = 1) {
-    return request(`conversations?page=${page}`);
+    return Request.getJson(`conversations?page=${page}`);
   }
 
   static delete(id: number) {
-    return request(`conversations/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`conversations/${id}`);
   }
 }

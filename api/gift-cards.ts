@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 import { User } from './users';
 
 export interface GiftCard {
@@ -16,26 +16,18 @@ export interface GiftCard {
 
 export default class GiftCardApi {
   static list(page = 1) {
-    return request(`gift-cards?page=${page}`);
+    return Request.getJson(`gift-cards?page=${page}`);
   }
 
   static create(giftCard: GiftCard): Promise<GiftCard> {
-    return request(`gift-cards`, {
-      method: 'POST',
-      body: JSON.stringify(giftCard)
-    });
+    return Request.postJson(`gift-cards`, giftCard);
   }
 
   static update(id: number, giftCard: GiftCard): Promise<GiftCard> {
-    return request(`gift-cards/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(giftCard)
-    });
+    return Request.patchJson(`gift-cards/${id}`, giftCard);
   }
 
   static delete(id: number) {
-    return request(`gift-cards/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`gift-cards/${id}`);
   }
 }

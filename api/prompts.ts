@@ -1,4 +1,4 @@
-import { request } from '@/lib/request';
+import Request from '@/lib/request';
 
 export interface Prompt {
   id: number;
@@ -13,26 +13,18 @@ export interface Prompt {
 
 export default class PromptApi {
   static list(page = 1) {
-    return request(`prompts?page=${page}`);
+    return Request.getJson(`prompts?page=${page}`);
   }
 
   static create(prompt: Prompt): Promise<Prompt> {
-    return request(`prompts`, {
-      method: 'POST',
-      body: JSON.stringify(prompt)
-    });
+    return Request.postJson(`prompts`, prompt);
   }
 
   static update(id: number, prompt: Prompt): Promise<Prompt> {
-    return request(`prompts/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(prompt)
-    });
+    return Request.patchJson(`prompts/${id}`, prompt);
   }
 
   static delete(id: number) {
-    return request(`prompts/${id}`, {
-      method: 'DELETE'
-    });
+    return Request.deleteJson(`prompts/${id}`);
   }
 }

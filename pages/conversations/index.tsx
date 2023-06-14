@@ -1,3 +1,15 @@
+import ConversationApi, { Conversation } from '@/api/conversations';
+import Loading from '@/components/loading';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import UserCell from '@/components/user-cell';
+import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -8,29 +20,18 @@ import {
   Text,
   Title
 } from '@tremor/react';
-import useSWR from 'swr';
-import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
-import ConversationApi, { Conversation } from '@/api/conversations';
-import Loading from '@/components/loading';
-import { toast } from 'react-hot-toast';
-import { formatDatetime, pagginationHandler } from '@/lib/utils';
-import UserCell from '@/components/user-cell';
-import { useRouter } from 'next/router';
-import ReactPaginate from 'react-paginate';
-import { Button } from '@/components/ui/button';
 import { MessageSquareIcon } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import useSWR from 'swr';
 
 export default function ConversationPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`conversations`, () =>
-    ConversationApi.list(parseInt((router.query.page as string) || '1'))
+  const { data, error, mutate, isLoading } = useSWR(
+    [`conversations`, router.query.page],
+    ([_, page]) => ConversationApi.list(parseInt((page as string) || '1'))
   );
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedConversation, setSelectedConversation] =
@@ -63,12 +64,12 @@ export default function ConversationPage() {
             <MessageSquareIcon size={24} />
             <span>对话</span>
           </Title>
-          <div className="text-gray-500">
+          <div className="text-muted-foreground">
             <small>共 {data?.total || 0} 条记录</small>
           </div>
         </div>
       </div>
-      <div className="rounded-lg border bg-white px-6 py-4 mt-6">
+      <div className="rounded-lg border bg-muted px-6 py-4 mt-6">
         <Table>
           <TableHead>
             <TableRow>
