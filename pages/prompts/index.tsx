@@ -95,6 +95,7 @@ export default function PromptPage() {
               <TableHeaderCell className="w-28">ID</TableHeaderCell>
               <TableHeaderCell>名称</TableHeaderCell>
               <TableHeaderCell>描述</TableHeaderCell>
+              <TableHeaderCell>使用次数</TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
           </TableHead>
@@ -123,6 +124,7 @@ export default function PromptPage() {
                     {prompt.description}
                   </Text>
                 </TableCell>
+                <TableCell>{prompt.conversations_count || 0}</TableCell>
                 <TableCell className="flex items-center justify-center gap-2">
                   <Button
                     variant="link"

@@ -1,4 +1,5 @@
 import Request from '@/lib/request';
+import { Prompt } from './prompts';
 import { User } from './users';
 
 export interface Conversation {
@@ -12,6 +13,7 @@ export interface Conversation {
   last_active_at?: string;
   created_at: string;
   updated_at: string;
+  prompt?: Prompt;
 }
 
 export default class ConversationApi {

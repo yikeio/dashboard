@@ -105,6 +105,7 @@ export default function UserPage() {
               <TableHeaderCell>手机号</TableHeaderCell>
               <TableHeaderCell>Email</TableHeaderCell>
               <TableHeaderCell>邀请者</TableHeaderCell>
+              <TableHeaderCell>付费总额</TableHeaderCell>
               <TableHeaderCell className="text-center">状态</TableHeaderCell>
               <TableHeaderCell className="text-center">
                 注册时间
@@ -139,6 +140,9 @@ export default function UserPage() {
                 <TableCell>{user.email || '-'}</TableCell>
                 <TableCell>
                   {user.referrer ? <UserCell user={user.referrer} /> : '-'}
+                </TableCell>
+                <TableCell className="text-center">
+                  ￥{user.paid_total || 0}
                 </TableCell>
                 <TableCell className="text-center">
                   <UserState user={user} />

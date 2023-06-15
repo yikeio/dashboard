@@ -77,9 +77,10 @@ export default function MessagePage() {
               <TableHeaderCell className="w-28">ID</TableHeaderCell>
               <TableHeaderCell>用户</TableHeaderCell>
               <TableHeaderCell>角色</TableHeaderCell>
+              <TableHeaderCell>场景</TableHeaderCell>
+              <TableHeaderCell>对话</TableHeaderCell>
               <TableHeaderCell>内容</TableHeaderCell>
               <TableHeaderCell>tokens</TableHeaderCell>
-              <TableHeaderCell>对话ID</TableHeaderCell>
               <TableHeaderCell>创建时间</TableHeaderCell>
               <TableHeaderCell className="text-center">操作</TableHeaderCell>
             </TableRow>
@@ -93,15 +94,18 @@ export default function MessagePage() {
                 </TableCell>
                 <TableCell>{message.role}</TableCell>
                 <TableCell>
+                  {message.conversation.prompt?.name || '-'}
+                </TableCell>
+                <TableCell>{message.conversation.title}</TableCell>
+                <TableCell>
                   <div
-                    className="max-w-[10vw] xl:max-w-[20vw] truncate"
+                    className="max-w-[6vw] xl:max-w-[10vw] truncate"
                     onClick={() => handleView(message)}
                   >
                     {message.content}
                   </div>
                 </TableCell>
                 <TableCell>{message.tokens_count}</TableCell>
-                <TableCell>{message.conversation_id}</TableCell>
                 <TableCell>
                   <Text>{formatDatetime(message.created_at)}</Text>
                 </TableCell>

@@ -75,6 +75,7 @@ export default function ConversationPage() {
             <TableRow>
               <TableHeaderCell className="w-28">ID</TableHeaderCell>
               <TableHeaderCell>用户</TableHeaderCell>
+              <TableHeaderCell>场景</TableHeaderCell>
               <TableHeaderCell>消息条数</TableHeaderCell>
               <TableHeaderCell>tokens</TableHeaderCell>
               <TableHeaderCell>首次对话</TableHeaderCell>
@@ -89,6 +90,7 @@ export default function ConversationPage() {
                 <TableCell>
                   <UserCell user={conversation.creator} />
                 </TableCell>
+                <TableCell>{conversation.prompt?.name || '-'}</TableCell>
                 <TableCell>{conversation.messages_count}</TableCell>
                 <TableCell>{conversation.tokens_count}</TableCell>
                 <TableCell>

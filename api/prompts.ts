@@ -9,6 +9,7 @@ export interface Prompt {
   prompt_cn?: string;
   prompt_en?: string;
   sort_order: number;
+  conversations_count?: number;
 }
 
 export default class PromptApi {
