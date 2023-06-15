@@ -1,6 +1,7 @@
 import MessageApi, { Message } from '@/api/messages';
 import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
+import ReactMarkdown from 'react-markdown';
 import {
   Dialog,
   DialogContent,
@@ -142,7 +143,7 @@ export default function MessagePage() {
             <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
           <div className="border text-gray-700 p-4 rounded-lg">
-            {selectedMessage?.content}
+            <ReactMarkdown>{selectedMessage?.content}</ReactMarkdown>
           </div>
           <DialogFooter></DialogFooter>
         </DialogContent>

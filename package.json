@@ -42,6 +42,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-markdown": "^8.0.7",
     "react-paginate": "^8.2.0",
     "sass": "^1.63.4",
     "server-only": "^0.0.1",
