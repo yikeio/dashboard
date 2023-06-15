@@ -133,7 +133,7 @@ export default function GiftCardPage() {
                 <TableCell className="text-center">
                   {formatDatetime(giftCard.expired_at)}
                 </TableCell>
-                <TableCell className="flex items-center justify-center gap-6">
+                <TableCell className="flex items-center justify-center gap-2">
                   <Button
                     variant="link"
                     size="sm"

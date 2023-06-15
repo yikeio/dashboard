@@ -112,7 +112,7 @@ export default function PaymentPage() {
                 <TableCell className="text-center">
                   {formatDatetime(payment.created_at)}
                 </TableCell>
-                <TableCell className="flex items-center justify-center gap-6">
+                <TableCell className="flex items-center justify-center gap-2">
                   <Button
                     variant="link"
                     size="sm"

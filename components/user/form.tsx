@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Switch } from '../ui/switch';
 
 export interface UserProps {
   user: User;
@@ -13,10 +14,10 @@ export interface UserProps {
 }
 
 export default function UserForm(props: UserProps) {
-  const [user, setuser] = useState<User>(props.user);
+  const [user, setUser] = useState<User>(props.user);
 
-  const updateValue = (key: string, value: string) => {
-    setuser((prev) => ({ ...prev, [key]: value }));
+  const updateValue = (key: string, value: string | boolean) => {
+    setUser((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSave = async () => {
@@ -58,6 +59,10 @@ export default function UserForm(props: UserProps) {
               }
             ></EmojiPicker>
           </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="admin">管理员</label>
+          <Switch onCheckedChange={() => updateValue('is_admin', true)} />
         </div>
       </div>
       <div className="flex gap-2 items-center justify-end mt-4">

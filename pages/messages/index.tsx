@@ -103,7 +103,7 @@ export default function MessagePage() {
                 <TableCell>
                   <Text>{formatDatetime(message.created_at)}</Text>
                 </TableCell>
-                <TableCell className="flex items-center justify-center gap-6">
+                <TableCell className="flex items-center justify-center gap-2">
                   <Button
                     variant="link"
                     size="sm"

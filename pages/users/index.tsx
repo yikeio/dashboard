@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import UserCell from '@/components/user-cell';
 import UserDetails from '@/components/user/details';
+import UserForm from '@/components/user/form';
 import UserState from '@/components/user/state';
 import { formatDatetime, pagginationHandler } from '@/lib/utils';
 import {
@@ -36,6 +37,7 @@ export default function UserPage() {
     userApi.list(router.query)
   );
   const [showFormModal, setShowFormModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [search, setSearch] = useState(router.query.search as string);
 
@@ -50,6 +52,11 @@ export default function UserPage() {
   const handleEdit = (user: User) => {
     setSelectedUser(user);
     setShowFormModal(true);
+  };
+
+  const handleView = (user: User) => {
+    setSelectedUser(user);
+    setShowDetailModal(true);
   };
 
   const handleDelete = async (user: User) => {
@@ -138,14 +145,22 @@ export default function UserPage() {
                 <TableCell className="text-center">
                   {user.created_at ? formatDatetime(user.created_at) : '-'}
                 </TableCell>
-                <TableCell className="flex items-center justify-center gap-6">
+                <TableCell className="flex items-center justify-center gap-2">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-5"
+                    onClick={() => handleView(user)}
+                  >
+                    查看
+                  </Button>
                   <Button
                     variant="link"
                     size="sm"
                     className="h-5"
                     onClick={() => handleEdit(user)}
                   >
-                    查看
+                    编辑
                   </Button>
                   <Button
                     variant="link"
@@ -171,14 +186,30 @@ export default function UserPage() {
         )}
       </div>
       <Dialog
-        open={showFormModal}
-        onOpenChange={(v: boolean) => setShowFormModal(v)}
+        open={showDetailModal}
+        onOpenChange={(v: boolean) => setShowDetailModal(v)}
       >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>用户详情</DialogTitle>
           </DialogHeader>
           <UserDetails user={selectedUser!} />
+          <DialogFooter></DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showFormModal}
+        onOpenChange={(v: boolean) => setShowFormModal(v)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>编辑用户</DialogTitle>
+          </DialogHeader>
+          <UserForm
+            user={selectedUser!}
+            onSaved={() => setShowFormModal(false)}
+            onCancel={() => setShowFormModal(false)}
+          />
           <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>

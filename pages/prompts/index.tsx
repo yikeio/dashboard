@@ -123,7 +123,7 @@ export default function PromptPage() {
                     {prompt.description}
                   </Text>
                 </TableCell>
-                <TableCell className="flex items-center justify-center gap-6">
+                <TableCell className="flex items-center justify-center gap-2">
                   <Button
                     variant="link"
                     size="sm"
