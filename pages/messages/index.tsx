@@ -1,7 +1,6 @@
 import MessageApi, { Message } from '@/api/messages';
 import Loading from '@/components/loading';
 import { Button } from '@/components/ui/button';
-import ReactMarkdown from 'react-markdown';
 import {
   Dialog,
   DialogContent,
@@ -25,7 +24,9 @@ import { MessageSquareIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import ReactMarkdown from 'react-markdown';
 import ReactPaginate from 'react-paginate';
+import remarkGfm from 'remark-gfm';
 import useSWR from 'swr';
 
 export default function MessagePage() {
@@ -143,7 +144,9 @@ export default function MessagePage() {
             <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
           <div className="border text-gray-700 p-4 rounded-lg">
-            <ReactMarkdown>{selectedMessage?.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {selectedMessage?.content || ''}
+            </ReactMarkdown>
           </div>
           <DialogFooter></DialogFooter>
         </DialogContent>
