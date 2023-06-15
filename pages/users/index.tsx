@@ -33,8 +33,9 @@ import useSWR from 'swr';
 
 export default function UserPage() {
   const router = useRouter();
-  const { data, error, mutate, isLoading } = useSWR(`users`, () =>
-    userApi.list(router.query)
+  const { data, error, mutate, isLoading } = useSWR(
+    [`users`, router.query],
+    ([_, query]) => userApi.list(query)
   );
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
