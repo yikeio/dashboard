@@ -143,11 +143,11 @@ export default function MessagePage() {
         open={showDetailModal}
         onOpenChange={(v: boolean) => setShowDetailModal(v)}
       >
-        <DialogContent>
+        <DialogContent className='sm:max-w-max'>
           <DialogHeader>
             <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
-          <div className="border text-gray-700 p-4 rounded-lg">
+          <div className="rounded-lg prose lg:prose-xl dark:prose-invert">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {selectedMessage?.content || ''}
             </ReactMarkdown>
