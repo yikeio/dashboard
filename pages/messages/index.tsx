@@ -147,7 +147,7 @@ export default function MessagePage() {
           <DialogHeader>
             <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
-          <div className="rounded-lg prose-sm dark:prose-invert max-h-[80vh] overflow-y-auto">
+          <div className="rounded-lg prose-sm dark:prose-invert max-w-lg max-h-[80vh] overflow-y-auto">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {selectedMessage?.content || ''}
             </ReactMarkdown>
