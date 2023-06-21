@@ -143,7 +143,7 @@ export default function MessagePage() {
         open={showDetailModal}
         onOpenChange={(v: boolean) => setShowDetailModal(v)}
       >
-        <DialogContent className='sm:max-w-max'>
+        <DialogContent className='sm:max-w-xl'>
           <DialogHeader>
             <DialogTitle>消息内容 - {selectedMessage?.id}</DialogTitle>
           </DialogHeader>
