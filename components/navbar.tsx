@@ -34,6 +34,7 @@ const navigation = [
   },
   { name: '场景', icon: <Wand2Icon size={16} />, href: '/prompts' },
   { name: '礼品卡', icon: <GiftIcon size={16} />, href: '/gift-cards' },
+  { name: '奖励', icon: <GiftIcon size={16} />, href: '/rewards' },
   {
     name: '标签',
     icon: <TagIcon size={16} />,
